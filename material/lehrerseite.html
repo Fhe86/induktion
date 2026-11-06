@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lehrerseite Induktion</title>
+<meta name="robots" content="noindex, nofollow">
+<style>
+:root{--ink:#1d2b24;--muted:#5b6c63;--gruen:#58b36f;--gruen-dk:#2c7a46}
+*{box-sizing:border-box}
+body{margin:0;background:#f1f8f0;color:var(--ink);font-family:Verdana,Arial,Helvetica,sans-serif;line-height:1.5;font-size:16px;-webkit-text-size-adjust:100%}
+.wrap{max-width:900px;margin:0 auto;padding:22px 20px 40px}
+.pbtn{min-height:46px;border-radius:12px;border:2px solid var(--gruen-dk);background:var(--gruen);color:#fff;font:inherit;font-weight:bold;padding:8px 18px;cursor:pointer}
+h1{font-size:27px;margin:12px 0 2px}
+.sub{color:var(--muted);margin:0 0 12px}
+h2{font-size:18px;margin:18px 0 6px;border-bottom:2px solid var(--ink);padding-bottom:3px}
+.box{border:2px solid var(--ink);border-radius:14px;padding:10px 16px;background:#fff;margin:8px 0}
+ul{margin:4px 0;padding-left:22px}
+li{margin-bottom:3px}
+ul.check{list-style:none;padding-left:0}
+ul.check li{padding-left:28px;position:relative}
+ul.check li::before{content:"\2610";position:absolute;left:2px;font-size:19px;line-height:1.2}
+table{width:100%;border-collapse:collapse;margin:6px 0;background:#fff;font-size:14.5px}
+th,td{border:1.5px solid var(--ink);padding:5px 9px;text-align:left;vertical-align:top}
+th{background:#e0f3e3}
+.zeit{white-space:nowrap;font-weight:bold}
+.kl{font-size:13.5px;color:var(--muted)}
+@page{size:A4;margin:12mm 14mm}
+@media print{body{background:#fff;font-size:10pt;line-height:1.36}.pbtn{display:none}.wrap{padding:0;max-width:none}h2{margin-top:10px;break-after:avoid}.box,table,tr{break-inside:avoid}table{font-size:9.5pt}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <button class="pbtn" onclick="window.print()">Als PDF herunterladen</button>
+  <h1>Lehrerseite: Licht ohne Batterie (Induktion)</h1>
+  <p class="sub">NT, Klasse 8 M-Zweig, 45 Minuten, Einstieg in die elektromagnetische Induktion.</p>
+
+  <h2>Ziel der Stunde</h2>
+  <div class="box">Die Schüler erklären: Nur ein <b>sich änderndes</b> Magnetfeld verschiebt die Elektronen in der Spule, dadurch entsteht eine Spannung. Aus eigenen Messungen benennen sie die drei Faktoren Tempo, Magnetstärke und Windungszahl.</div>
+
+  <h2>Lehrplanbezug (LehrplanPLUS Bayern)</h2>
+  <div class="box">
+    <b>NT 8, Mittlere-Reife-Klasse, Lernbereich 2 "Lebensgrundlage Energie", 2.2 Elektromagnetische Induktion.</b>
+    <ul>
+      <li>Abgedeckt: "erklären anhand von Experimenten, wie sich eine Induktionsspannung erzeugen lässt und von welchen Faktoren sie abhängt."</li>
+      <li>Inhalte: Erzeugung, Abhängigkeit von Windungszahl, Stärke und Geschwindigkeit der Magnetfeldänderung, Anwendung Induktionstaschenlampe.</li>
+      <li>Noch offen für Folgestunden: Wechsel- und Gleichspannung, Generator und Vergleich mit dem Elektromotor, Transformator.</li>
+    </ul>
+    <p class="kl" style="margin:6px 0 0">Quelle: lehrplanplus.bayern.de, abgerufen am 06.11.2026.</p>
+  </div>
+
+  <h2>Vorab im NT-Raum testen (nur du kannst das prüfen)</h2>
+  <ul class="check">
+    <li>Spannung messen: 400 und 1600 Windungen, schwacher und starker Magnet. Welche Größenordnung kommt heraus, welcher Messbereich passt?</li>
+    <li>Digitale Messgeräte: Folgt die Anzeige einem schnellen Stoß? Haben sie eine MIN/MAX-Taste? Sonst Zeitlupe filmen lassen.</li>
+    <li>Zeigergerät: Schlägt es nach beiden Seiten aus (Nullpunkt in der Mitte)? Sonst kann der Zeiger bei einer Richtung nur gegen den Anschlag drücken.</li>
+    <li>Polung für die Demo prüfen: Wenn du "hinein" als + zeigen willst, ggf. die Kabel tauschen.</li>
+    <li>Zahl der Messplätze festlegen, daraus die Teamgröße ableiten. Geräte vorher auf die Plätze stellen.</li>
+    <li>Schüttellampe funktioniert, Teile sind durch das Gehäuse sichtbar.</li>
+    <li>Am iPad: Seite laden, WLAN aus, Hefteintrag ausfüllen und PDF sichern. Klappt das auch beim Raumwechsel ohne Neuladen?</li>
+  </ul>
+
+  <h2>Verlauf</h2>
+  <table>
+    <tr><th>Zeit</th><th>Phase</th><th>Was passiert</th></tr>
+    <tr><td class="zeit">vorher</td><td>Klassenzimmer</td><td>QR scannen, Schüler-Seite öffnen, Forscherblatt in OneNote einfügen. Tab offen lassen und in den NT-Raum gehen.</td></tr>
+    <tr><td class="zeit">0 bis 5</td><td>Rätsel</td><td>Lampe schütteln, sie leuchtet. "Da ist keine Batterie drin." Brücke zur Motorstunde: "Beim Motor macht Strom Bewegung. Geht das auch umgekehrt?" Vermutung notieren.</td></tr>
+    <tr><td class="zeit">5 bis 10</td><td>Erster Versuch</td><td>Demo mit Zeigergerät. Erst vorhersagen lassen: Magnet ruht, Magnet hinein, Magnet heraus. Beobachtung: Der Zeiger schlägt nur bei Bewegung aus, die Richtung wechselt.</td></tr>
+    <tr><td class="zeit">10 bis 25</td><td>Forschen</td><td>Teams messen mit dem Digitalgerät (Forscherblatt, Nr. 1 bis 7). Rekordversuch als Anreiz: Wer erreicht die höchste Spannung?</td></tr>
+    <tr><td class="zeit">25 bis 33</td><td>Erklären</td><td>Induktions-Labor am iPad. Warum 0, warum +, warum &minus;? Die 3 Situationen auf dem Forscherblatt kurz erklären. Dann Diagnosefrage per Handzeichen.</td></tr>
+    <tr><td class="zeit">33 bis 41</td><td>Hefteintrag</td><td>Lücken ausfüllen, prüfen, PDF nach OneNote.</td></tr>
+    <tr><td class="zeit">41 bis 45</td><td>Abschluss</td><td>Lampe auflösen: Magnet und Spule zeigen. Mini-Check. Ausblick auf den Generator.</td></tr>
+  </table>
+  <p class="kl">Zeit knapp? Mini-Check entfällt. Beim Forscherblatt reicht bei Situation 1 die mündliche Erklärung. Der Hefteintrag bleibt.</p>
+
+  <h2>Fachlich: worauf du achten solltest</h2>
+  <ul>
+    <li><b>Fehlvorstellung "Anziehen":</b> In der alten Musterlösung werden die Elektronen angezogen oder abgestoßen. Dann müsste auch ein ruhender Magnet eine Spannung erzeugen. Darum sagen wir: Das sich ändernde Magnetfeld verschiebt die Elektronen.</li>
+    <li><b>Hineinstoßen statt durchschieben:</b> Beim Durchschieben kommen zwei Ausschläge mit verschiedenen Vorzeichen, und in der Mitte ist die Spannung kurz fast 0. Das verwirrt beim Ablesen. Im Labor können die Stärkeren das trotzdem ausprobieren.</li>
+    <li><b>Offener Stromkreis:</b> Am Spannungsmessgerät fließt fast kein Strom, die Elektronen werden nur verschoben. Fließt Strom, wie bei der LED, kommt ein geschlossener Stromkreis dazu.</li>
+    <li><b>Schüttellampe:</b> Viele Modelle haben zusätzlich einen Kondensator als kleinen Speicher, deshalb leuchten sie nach dem Schütteln kurz nach. Das muss in dieser Stunde nicht vertieft werden.</li>
+    <li><b>Das Labor ist ein Modell:</b> Die Anzeige zeigt Modellwerte (Spannung proportional zu Windungszahl, Magnetstärke und Tempo). Echte Messwerte weichen ab. Die alten "±1,0 V" sind deshalb nicht als Messwert übernommen. Die Elektronen werden stark vergrößert und vereinfacht gezeigt.</li>
+    <li><b>Vorzeichen:</b> Ob "hinein" + oder &minus; ergibt, hängt von Polung, Wickelrichtung und vorderem Magnetpol ab. Entscheidend ist der Wechsel.</li>
+  </ul>
+
+  <h2>Diagnosefrage: Auswertung</h2>
+  <table>
+    <tr><th>Antwort</th><th>Was dahintersteckt</th><th>So gehst du darauf ein</th></tr>
+    <tr><td>A Hohe Spannung</td><td>"Starkes Feld reicht."</td><td>Im Labor Magnet in die Spule schieben und stoppen.</td></tr>
+    <tr><td>B Kleine, dauerhafte Spannung</td><td>"Der Magnet hält die Elektronen dauernd fest."</td><td>Labor zeigen: Die Elektronen rutschen beim Stopp zurück, Anzeige 0.</td></tr>
+    <tr><td><b>C 0, das Feld ändert sich nicht (richtig)</b></td><td></td><td>Weiter zum Hefteintrag.</td></tr>
+    <tr><td>D 0, Magnet verliert die Kraft</td><td>Der Wert stimmt, die Begründung nicht.</td><td>Feldbalken im Labor: In der Mitte ist das Feld am stärksten.</td></tr>
+  </table>
+
+  <h2>Lösungen</h2>
+  <p style="margin:4px 0">Hefteintrag und Forscherblatt liegen als eigene Lösungs-PDFs im Reiter Material. Mini-Check: stärker, schneller und mehr Windungen erhöhen die Spannung; dickere Kabel und langes Stillhalten bringen nichts.</p>
+
+  <h2>Differenzierung</h2>
+  <ul>
+    <li><b>Schwächere:</b> Im Team die Nummern 1 bis 5 messen, Satzanfänge mündlich geben, im Labor mit "automatisch bewegen" vergleichen.</li>
+    <li><b>Stärkere:</b> Magnet ganz durchschieben, Verlauf im Labor deuten. Frage: Hilft ein Eisenkern? Warum muss man die Lampe immer wieder schütteln?</li>
+  </ul>
+
+  <h2>Plan B</h2>
+  <ul>
+    <li><b>Gerät zu träge:</b> Zeitlupe vom Display oder Zeigergerät, die Tabelle nur mit "klein, mittel, groß" führen.</li>
+    <li><b>Geräte fallen aus:</b> Demo vorn, Messung im Labor durchführen und Modellwerte eintragen. Das muss dann klar gesagt werden.</li>
+    <li><b>Seite auf einem iPad weg:</b> Mit einem anderen Team teilen. Hefteintrag zuhause fertigstellen.</li>
+  </ul>
+</div>
+</body>
+</html>

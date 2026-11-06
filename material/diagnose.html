@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Diagnosefrage Induktion</title>
+<meta name="robots" content="noindex, nofollow">
+<style>
+:root{--ink:#1d2b24;--muted:#5b6c63;--gruen:#58b36f;--gruen-dk:#2c7a46;--orange:#f0a30a}
+*{box-sizing:border-box}
+body{margin:0;background:#f1f8f0;color:var(--ink);font-family:Verdana,Arial,Helvetica,sans-serif;line-height:1.5;font-size:18px;-webkit-text-size-adjust:100%}
+button{font:inherit;color:inherit;cursor:pointer;touch-action:manipulation}
+.wrap{max-width:980px;margin:0 auto;padding:22px 20px 50px}
+.chip{display:inline-block;font-size:12px;font-weight:bold;letter-spacing:.08em;text-transform:uppercase;border:2px solid var(--gruen-dk);color:var(--gruen-dk);border-radius:999px;padding:3px 14px;background:#fff}
+h1{font-size:clamp(25px,4.2vw,38px);line-height:1.15;margin:14px 0 12px}
+.lage{display:grid;grid-template-columns:minmax(0,340px) 1fr;gap:22px;align-items:center;margin:0 0 18px}
+.lage svg{width:100%;height:auto;border:2px solid var(--ink);border-radius:16px;background:#fff;padding:8px}
+.lage p{margin:0;font-size:20px}
+.opt{display:grid;gap:11px}
+.o{display:grid;grid-template-columns:54px 1fr;gap:14px;align-items:center;text-align:left;border:2.5px solid var(--ink);border-radius:16px;background:#fff;padding:10px 16px;min-height:62px}
+.o b{display:grid;place-items:center;width:44px;height:44px;border-radius:50%;background:var(--ink);color:#fff;font-size:22px}
+.o[aria-pressed=true]{background:#fff6e0;border-color:#9a6a05}
+.o.richtig[aria-pressed=true]{background:#dbf3e0;border-color:#1e9e4d}
+.fb{margin-top:16px;border:2.5px solid var(--ink);border-radius:16px;padding:14px 20px;background:#fff;display:none}
+.fb.show{display:block}
+.fb.richtig{border-color:#1e9e4d;background:#f0faf2}
+.fb h2{font-size:20px;margin:0 0 4px}
+.fb p{margin:0}
+.lehr{margin-top:24px;border:2px dashed var(--muted);border-radius:16px;padding:12px 20px;font-size:15px;background:#fafdfa}
+.lehr h3{margin:0 0 6px;font-size:16px}
+.lehr ul{margin:0;padding-left:20px}
+@media (max-width:700px){.lage{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <span class="chip">NT &middot; Diagnosefrage</span>
+  <h1>Der Magnet steckt in der Spule und liegt ganz still. Was zeigt das Messgerät?</h1>
+  <div class="lage"><svg viewBox="0 0 360 205" xmlns="http://www.w3.org/2000/svg" role="img"><rect x="76" y="6" width="88" height="68" rx="9" fill="#fff" stroke="#1d2b24" stroke-width="2.5"/><rect x="85" y="14" width="70" height="30" rx="4" fill="#e0f3e3" stroke="#1d2b24" stroke-width="1.5"/><text x="120" y="37" text-anchor="middle" font-family="Arial,sans-serif" font-weight="bold" font-size="22" fill="#1d2b24">?</text><circle cx="102" cy="60" r="5" fill="#1d2b24"/><circle cx="138" cy="60" r="5" fill="#e4574f"/><path d="M102 60 C100 92 65 86 65.0 108" fill="none" stroke="#1d2b24" stroke-width="2.5"/><path d="M138 60 C140 92 175 86 175.0 108" fill="none" stroke="#e4574f" stroke-width="2.5"/><path d="M72.9 192 A14.1 42 0 0 1 80.7 108 M88.6 192 A14.1 42 0 0 1 96.4 108 M104.3 192 A14.1 42 0 0 1 112.1 108 M120.0 192 A14.1 42 0 0 1 127.9 108 M135.7 192 A14.1 42 0 0 1 143.6 108 M151.4 192 A14.1 42 0 0 1 159.3 108 M167.1 192 A14.1 42 0 0 1 175.0 108" fill="none" stroke="#8f5526" stroke-width="4.5" stroke-linecap="round"/><g><rect x="74.0" y="135.0" width="46.0" height="30" rx="3" fill="#e4574f" stroke="#1d2b24" stroke-width="2"/><rect x="120" y="135.0" width="46.0" height="30" rx="3" fill="#58b36f" stroke="#1d2b24" stroke-width="2"/><text x="97.0" y="155.95" text-anchor="middle" font-family="Arial,sans-serif" font-weight="bold" font-size="17" fill="#fff">N</text><text x="143.0" y="155.95" text-anchor="middle" font-family="Arial,sans-serif" font-weight="bold" font-size="17" fill="#fff">S</text></g><path d="M65.0 108 A14.1 42 0 0 1 72.9 192 M80.7 108 A14.1 42 0 0 1 88.6 192 M96.4 108 A14.1 42 0 0 1 104.3 192 M112.1 108 A14.1 42 0 0 1 120.0 192 M127.9 108 A14.1 42 0 0 1 135.7 192 M143.6 108 A14.1 42 0 0 1 151.4 192 M159.3 108 A14.1 42 0 0 1 167.1 192" fill="none" stroke="#c8793a" stroke-width="4.5" stroke-linecap="round"/></svg><p>Überlege allein. Auf mein Zeichen zeigt ihr alle gleichzeitig A, B, C oder D.</p></div>
+  <div class="opt" id="opt"><button class="o" data-k="a" aria-pressed="false"><b>A</b><span>Hohe Spannung, weil das Magnetfeld in der Spule stark ist.</span></button><button class="o" data-k="b" aria-pressed="false"><b>B</b><span>Eine kleine, dauerhafte Spannung, weil der Magnet die Elektronen festhält.</span></button><button class="o richtig" data-k="c" aria-pressed="false"><b>C</b><span>0, weil sich das Magnetfeld in der Spule nicht ändert.</span></button><button class="o" data-k="d" aria-pressed="false"><b>D</b><span>0, weil der Magnet in der Spule seine Kraft verliert.</span></button></div>
+  <div class="fb" id="fb" aria-live="polite"></div>
+  <section class="lehr">
+    <h3>Für die Lehrkraft</h3>
+    <ul>
+      <li>Handzeichen statt digital, weil das WLAN im NT-Raum nicht zuverlässig ist. Erst alle zählen, dann auflösen.</li>
+      <li>Weiter, wenn rund 80 Prozent C zeigen. Sonst im Labor den Magneten in die Spule schieben und anhalten.</li>
+      <li>D ist die kniffligste Antwort: Der Wert stimmt, die Begründung nicht.</li>
+    </ul>
+  </section>
+</div>
+<script>
+(function () {
+  var DATA = {"a": {"richtig": false, "titel": "Ein starkes Feld allein reicht nicht.", "text": "Entscheidend ist die Änderung des Magnetfelds. Liegt der Magnet still, ändert sich nichts und das Gerät zeigt 0."}, "b": {"richtig": false, "titel": "Der Magnet hält die Elektronen nicht fest.", "text": "Nur während sich das Feld ändert, werden die Elektronen verschoben. Stoppt der Magnet, verteilen sie sich wieder."}, "c": {"richtig": true, "titel": "Genau.", "text": "Ohne Änderung des Magnetfelds entsteht keine Spannung, auch wenn der Magnet mitten in der Spule steckt."}, "d": {"richtig": false, "titel": "Die 0 stimmt, die Begründung nicht.", "text": "Der Magnet behält seine Kraft. Das Feld in der Spule ist sogar besonders stark, es ändert sich nur nicht."}};
+  var fb = document.getElementById('fb'), opts = document.querySelectorAll('.o');
+  opts.forEach(function (o) {
+    o.addEventListener('click', function () {
+      var d = DATA[o.getAttribute('data-k')];
+      opts.forEach(function (x) { x.setAttribute('aria-pressed', String(x === o)); });
+      fb.className = 'fb show' + (d.richtig ? ' richtig' : '');
+      fb.textContent = '';
+      var h = document.createElement('h2'); h.textContent = d.titel; fb.appendChild(h);
+      var p = document.createElement('p'); p.textContent = d.text; fb.appendChild(p);
+    });
+  });
+})();
+</script>
+</body>
+</html>

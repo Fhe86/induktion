@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Forscherblatt Induktion</title>
+<meta name="robots" content="noindex, nofollow">
+<style>
+/* Variante B: Kastenlook (Vorbild: Demokratie-Probe). Jede Aufgabe ein eigener Kasten mit hellem Farbkopf,
+   Bild pro Aufgabe, Selbsteinschätzung am Schluss. Für GPG, Sachfächer, Förderzentrum. */
+:root {
+  --fach: #1e6b45;          /* Fachfarbe dunkel (Kasten-Rand, Titel). GPG Lila, NuT Grün, Mathe Blau, Svenja GPG dunkelgrün */
+  --fach-hell: #e2f1e8;     /* Fachfarbe hell (Kopfband) */
+  --loesung: #1f4fa3;
+  --schrift: 14pt;          /* 12 pt bei M-Klassen, 14 pt bei Förderzentrum */
+  --zeile: 10mm;
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: #e9e9e9; font-family: Arial, Helvetica, sans-serif; font-size: var(--schrift); line-height: 1.5; color: #000; }
+.seite { position: relative; width: 210mm; height: 297mm; margin: 8mm auto; padding: 12mm 14mm 16mm; background: #fff; border: .6pt solid #000; box-shadow: 0 1px 6px rgba(0,0,0,.25); page-break-after: always; break-after: page; }
+.seite .fuss { position: absolute; left: 0; right: 0; bottom: 5mm; text-align: center; font-size: 9pt; }
+.kopfzeile { display: flex; justify-content: space-between; align-items: baseline; font-weight: 700; margin-bottom: 8mm; }
+.kopfzeile .fach { font-size: 20pt; color: var(--fach); }
+.titelkasten { border: 2pt solid var(--fach); padding: 8mm 6mm; text-align: center; margin-bottom: 8mm; }
+.titelkasten h1 { margin: 0; font-size: 26pt; }
+.titelkasten .thema { margin: 2mm 0 3mm; font-size: 12pt; } .titelkasten img { height: 28mm; }
+.kasten { border: 1.4pt solid var(--fach); margin-bottom: 7mm; break-inside: avoid; }
+.kasten .kopf { display: flex; justify-content: space-between; background: var(--fach-hell); border-bottom: 1pt solid var(--fach); padding: 1.5mm 4mm; font-weight: 700; }
+.kasten .kopf .nr { color: var(--fach); margin-right: 3mm; }
+.kasten .kopf .punkte { white-space: nowrap; }
+.kasten .kopf .punkte::before { content: "___ / "; } .kasten .kopf .punkte::after { content: " P"; }
+.kasten .rumpf { padding: 3mm 5mm 4mm; display: flex; gap: 5mm; align-items: center; } .kasten .rumpf .text { flex: 1; } .kasten .rumpf img { height: 24mm; }
+.kasten p { margin: 0 0 2mm; }
+.teil { margin: 3mm 0 0; }
+.kreuz { margin: 2mm 0 4mm 10mm; line-height: 1.9; }                                    /* Kästchen weit eingerückt */
+.kreuz div::before { content: "☐"; margin-right: 3mm; font-size: 1.1em; }
+.zeilen i { display: block; height: var(--zeile); border-bottom: .8pt solid #555; }
+.hinweis { color: var(--fach); }
+table.skala { border-collapse: collapse; width: 100%; margin-top: 2mm; font-size: 11pt; }
+table.skala th, table.skala td { border: .8pt solid #000; padding: 2mm; text-align: center; }
+table.skala th:nth-child(2), table.skala td:nth-child(2) { background: #e2f1e8; } table.skala th:nth-child(3) { background: #fff3d1; } table.skala th:nth-child(4) { background: #fde3dc; }
+.ergebnisband { display: flex; justify-content: space-between; background: var(--fach-hell); border: 1.4pt solid var(--fach); padding: 2mm 4mm; font-weight: 700; margin-bottom: 7mm; }
+.sterne { font-size: 30pt; letter-spacing: 3mm; line-height: 1; }
+.unterschriften { display: flex; gap: 20mm; margin-top: 14mm; } .unterschriften div { flex: 1; border-top: .8pt solid #000; padding-top: 1mm; font-size: 11pt; }
+.loesung { color: var(--loesung); } .haken::after { content: " ✓"; color: var(--loesung); }
+.druckknopf { position: fixed; top: 10px; right: 10px; padding: 8px 14px; font: 14px Arial; border: 0; border-radius: 6px; background: var(--fach); color: #fff; cursor: pointer; z-index: 9; }
+@page { size: A4; margin: 0; }
+@media print { body { background: #fff; } .seite { margin: 0; box-shadow: none; } .druckknopf { display: none; } * { -webkit-print-color-adjust: exact; print-color-adjust: exact; } }
+
+:root{--schrift:12pt;--zeile:9mm;--fach:#2c7a46;--fach-hell:#e0f3e3}
+.seite{padding:10mm 14mm 14mm}
+.seite:last-of-type{break-after:auto;page-break-after:auto}
+.kopfzeile{margin-bottom:5mm}.kopfzeile .fach{font-size:16pt}.kopfzeile span{font-weight:400}
+.titelkasten{padding:4mm 6mm;margin-bottom:6mm;display:flex;align-items:center;gap:6mm;text-align:left}
+.titelkasten h1{font-size:23pt;line-height:1.1}.titelkasten .thema{margin:1mm 0 0}
+.titelkasten svg{width:72mm;flex:none}
+.kasten{margin-bottom:5mm}
+.kasten .rumpf{display:block}
+.zweispaltig{display:grid;grid-template-columns:1fr 66mm;gap:5mm;align-items:start}
+.zweispaltig svg{width:100%;height:auto;display:block}
+.schritte{margin:0;padding-left:6mm}.schritte li{margin-bottom:1.3mm}
+table.mess{width:100%;border-collapse:collapse;font-size:11pt}
+table.mess th,table.mess td{border:.8pt solid #000;padding:1.6mm 2mm;text-align:left;height:8.4mm}
+table.mess th{background:var(--fach-hell)}
+table.mess td.wert{width:52mm}
+body.sol table.mess td{padding:1mm 2mm;height:7.6mm}
+body.sol .antwort{font-size:10.5pt;line-height:1.3}
+body.sol .situation{padding:1mm 0}
+body.sol .kasten{margin-bottom:4mm}
+.vergleich{margin:3mm 0 0}
+.vergleich div{display:flex;justify-content:space-between;gap:4mm;padding:1mm 0;border-top:.5pt solid #bbb}
+.vergleich span{white-space:nowrap}
+.vergleich u{text-decoration:none;margin-left:3mm}
+.vergleich u::before{content:"\2610";margin-right:1mm}
+.situation{display:grid;grid-template-columns:46mm 1fr;gap:4mm;align-items:center;border-top:.5pt solid #bbb;padding:1.5mm 0}
+.situation:first-of-type{border-top:0}
+.situation svg{width:100%;height:auto;display:block}
+.situation h3{margin:0;font-size:11.5pt}
+.ausblick{border:1.4pt solid var(--fach);background:var(--fach-hell);padding:2.5mm 4mm;font-weight:700}
+.antwort{display:none;color:var(--loesung);font-weight:700}
+body.sol .antwort{display:block}
+body.sol td .antwort{display:inline}
+body.sol .zeilen{display:none}
+body.sol .vergleich u.ja::before{content:"\2612";color:var(--loesung)}
+body.sol .kopfzeile .fach::after{content:" (Lösung)";color:var(--loesung)}
+</style>
+</head>
+<body>
+<button class="druckknopf" onclick="window.print()">Als PDF herunterladen</button>
+<div class="seite">
+  <div class="kopfzeile"><span class="fach">NT Klasse 8: Forscherblatt</span><span>Team: ____________________</span></div>
+  <div class="titelkasten">
+    <svg viewBox="0 0 420 148" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Schnittbild einer Schüttellampe mit Magnet, Spule und LED"><path d="M72 74 L0 24 L0 126 L72 96 Z" fill="#ffd95c" opacity=".55"/><path d="M72 54 L104 62 L104 108 L72 116 Z" fill="#eef6f2" stroke="#1d2b24" stroke-width="3" stroke-linejoin="round"/><rect x="102" y="58" width="306" height="54" rx="20" fill="#f5fbf8" stroke="#1d2b24" stroke-width="3"/><path d="M72 74 a13 13 0 0 1 0 22 Z" transform="translate(16 0)" fill="#ffd230" stroke="#1d2b24" stroke-width="2.5"/><rect x="128" y="62" width="14" height="46" rx="4" fill="#9aa8a0"/><rect x="384" y="62" width="14" height="46" rx="4" fill="#9aa8a0"/><path d="M183.1 115 A7.8 30 0 0 1 187.2 55 M191.3 115 A7.8 30 0 0 1 195.4 55 M199.6 115 A7.8 30 0 0 1 203.7 55 M207.8 115 A7.8 30 0 0 1 211.9 55 M216.0 115 A7.8 30 0 0 1 220.1 55 M224.2 115 A7.8 30 0 0 1 228.3 55 M232.4 115 A7.8 30 0 0 1 236.6 55 M240.7 115 A7.8 30 0 0 1 244.8 55 M248.9 115 A7.8 30 0 0 1 253.0 55" fill="none" stroke="#8f5526" stroke-width="3.6" stroke-linecap="round"/><g><rect x="272.0" y="74.0" width="36.0" height="22" rx="3" fill="#e4574f" stroke="#1d2b24" stroke-width="2"/><rect x="308" y="74.0" width="36.0" height="22" rx="3" fill="#58b36f" stroke="#1d2b24" stroke-width="2"/><text x="290.0" y="89.55" text-anchor="middle" font-family="Arial,sans-serif" font-weight="bold" font-size="13" fill="#fff">N</text><text x="326.0" y="89.55" text-anchor="middle" font-family="Arial,sans-serif" font-weight="bold" font-size="13" fill="#fff">S</text></g><path d="M179.0 55 A7.8 30 0 0 1 183.1 115 M187.2 55 A7.8 30 0 0 1 191.3 115 M195.4 55 A7.8 30 0 0 1 199.6 115 M203.7 55 A7.8 30 0 0 1 207.8 115 M211.9 55 A7.8 30 0 0 1 216.0 115 M220.1 55 A7.8 30 0 0 1 224.2 115 M228.3 55 A7.8 30 0 0 1 232.4 115 M236.6 55 A7.8 30 0 0 1 240.7 115 M244.8 55 A7.8 30 0 0 1 248.9 115" fill="none" stroke="#c8793a" stroke-width="3.6" stroke-linecap="round"/><path d="M290 132 L331 132" stroke="#f0a30a" stroke-width="5" stroke-linecap="round"/><path d="M340 132 L327 124 L327 140 Z" fill="#f0a30a"/><path d="M286 132 L259 132" stroke="#f0a30a" stroke-width="5" stroke-linecap="round"/><path d="M250 132 L263 124 L263 140 Z" fill="#f0a30a"/></svg>
+    <div><h1>Licht ohne Batterie?</h1><p class="thema">Wir erzeugen selbst eine Spannung, nur mit Magnet und Spule.</p></div>
+  </div>
+
+  <div class="kasten"><div class="kopf"><span><span class="nr">1</span>Meine Vermutung</span></div><div class="rumpf">
+    <p><b>Schreibe auf:</b> Warum leuchtet die Lampe beim Schütteln, obwohl keine Batterie drin ist?</p>
+    <div class="zeilen"><i></i><i></i></div>
+    <div class="antwort">Eigene Vermutung, es gibt hier noch kein richtig oder falsch. Wir klären das am Ende der Stunde.</div>
+  </div></div>
+
+  <div class="kasten"><div class="kopf"><span><span class="nr">2</span>So messt ihr</span></div><div class="rumpf">
+    <div class="zweispaltig">
+      <div>
+        <p><b>Ihr braucht:</b> Spule mit 400 und mit 1600 Windungen, schwachen und starken Stabmagneten, Messgerät, 2 Kabel.</p>
+        <ol class="schritte">
+          <li>Schließt die Spule mit <b>400 Windungen</b> an das Messgerät an.</li>
+          <li>Stellt das Gerät auf <b>Gleichspannung</b> im kleinsten Bereich (<b>mV</b>).</li>
+          <li>Haltet den <b>Nordpol</b> des schwachen Magneten an die Spulenöffnung.</li>
+          <li><b>Stoßt</b> den Magneten hinein, zieht ihn heraus. Nicht ganz durchschieben.</li>
+          <li>Tragt den <b>höchsten Wert mit Vorzeichen</b> in die Tabelle ein.</li>
+        </ol>
+      </div>
+      <svg viewBox="0 0 360 205" xmlns="http://www.w3.org/2000/svg" role="img"><rect x="76" y="6" width="88" height="68" rx="9" fill="#fff" stroke="#1d2b24" stroke-width="2.5"/><rect x="85" y="14" width="70" height="30" rx="4" fill="#e0f3e3" stroke="#1d2b24" stroke-width="1.5"/><text x="120" y="37" text-anchor="middle" font-family="Arial,sans-serif" font-weight="bold" font-size="22" fill="#1d2b24">mV</text><circle cx="102" cy="60" r="5" fill="#1d2b24"/><circle cx="138" cy="60" r="5" fill="#e4574f"/><path d="M102 60 C100 92 65 86 65.0 108" fill="none" stroke="#1d2b24" stroke-width="2.5"/><path d="M138 60 C140 92 175 86 175.0 108" fill="none" stroke="#e4574f" stroke-width="2.5"/><path d="M72.9 192 A14.1 42 0 0 1 80.7 108 M88.6 192 A14.1 42 0 0 1 96.4 108 M104.3 192 A14.1 42 0 0 1 112.1 108 M120.0 192 A14.1 42 0 0 1 127.9 108 M135.7 192 A14.1 42 0 0 1 143.6 108 M151.4 192 A14.1 42 0 0 1 159.3 108 M167.1 192 A14.1 42 0 0 1 175.0 108" fill="none" stroke="#8f5526" stroke-width="4.5" stroke-linecap="round"/><g><rect x="216.0" y="135.0" width="46.0" height="30" rx="3" fill="#e4574f" stroke="#1d2b24" stroke-width="2"/><rect x="262" y="135.0" width="46.0" height="30" rx="3" fill="#58b36f" stroke="#1d2b24" stroke-width="2"/><text x="239.0" y="155.95" text-anchor="middle" font-family="Arial,sans-serif" font-weight="bold" font-size="17" fill="#fff">N</text><text x="285.0" y="155.95" text-anchor="middle" font-family="Arial,sans-serif" font-weight="bold" font-size="17" fill="#fff">S</text></g><path d="M65.0 108 A14.1 42 0 0 1 72.9 192 M80.7 108 A14.1 42 0 0 1 88.6 192 M96.4 108 A14.1 42 0 0 1 104.3 192 M112.1 108 A14.1 42 0 0 1 120.0 192 M127.9 108 A14.1 42 0 0 1 135.7 192 M143.6 108 A14.1 42 0 0 1 151.4 192 M159.3 108 A14.1 42 0 0 1 167.1 192" fill="none" stroke="#c8793a" stroke-width="4.5" stroke-linecap="round"/><path d="M280 116 L229 116" stroke="#f0a30a" stroke-width="5" stroke-linecap="round"/><path d="M220 116 L233 108 L233 124 Z" fill="#f0a30a"/></svg>
+    </div>
+    <p class="hinweis" style="margin:2mm 0 0">Die Zahl springt zu schnell? Filmt die Anzeige mit dem iPad in Zeitlupe. Magnete nicht direkt aufs iPad legen.</p>
+  </div></div>
+
+  <div class="ausblick">Ändert immer nur eine Sache auf einmal. Nur so seht ihr, was die Spannung wirklich verändert.</div>
+</div>
+
+<div class="seite">
+  <div class="kasten"><div class="kopf"><span><span class="nr">3</span>Messen und vergleichen</span></div><div class="rumpf">
+    <table class="mess">
+      <tr><th>Nr.</th><th>Spule</th><th>Magnet</th><th>Bewegung</th><th>Anzeige (+ oder &minus;)</th></tr>
+      <tr><td>1</td><td>400</td><td>schwach</td><td>liegt still in der Spule</td><td class="wert"><span class="antwort">0</span></td></tr>
+      <tr><td>2</td><td>400</td><td>schwach</td><td>langsam hinein</td><td class="wert"><span class="antwort">kleiner Wert</span></td></tr>
+      <tr><td>3</td><td>400</td><td>schwach</td><td>schnell hinein</td><td class="wert"><span class="antwort">größer als Nr. 2, gleiches Vorzeichen</span></td></tr>
+      <tr><td>4</td><td>400</td><td>schwach</td><td>schnell heraus</td><td class="wert"><span class="antwort">wie Nr. 3, anderes Vorzeichen</span></td></tr>
+      <tr><td>5</td><td><b>1600</b></td><td>schwach</td><td>schnell hinein</td><td class="wert"><span class="antwort">deutlich größer als Nr. 3</span></td></tr>
+      <tr><td>6</td><td>400</td><td><b>stark</b></td><td>schnell hinein</td><td class="wert"><span class="antwort">größer als Nr. 3</span></td></tr>
+      <tr><td>7</td><td colspan="3"><b>Rekordversuch:</b> Wie bekommt ihr die höchste Spannung?</td><td class="wert"><span class="antwort">1600, stark, schnell</span></td></tr>
+    </table>
+    <div class="vergleich">
+      <p style="margin:0 0 1mm"><b>Kreuze an:</b> Wie verändert sich die Spannung?</p>
+      <div><b>Schneller bewegt (Nr. 2 und 3)</b><span><u class="ja">höher</u><u>niedriger</u><u>gleich</u></span></div>
+      <div><b>Mehr Windungen (Nr. 3 und 5)</b><span><u class="ja">höher</u><u>niedriger</u><u>gleich</u></span></div>
+      <div><b>Stärkerer Magnet (Nr. 3 und 6)</b><span><u class="ja">höher</u><u>niedriger</u><u>gleich</u></span></div>
+    </div>
+  </div></div>
+
+  <div class="kasten"><div class="kopf"><span><span class="nr">4</span>Erklären</span></div><div class="rumpf">
+    <p><b>Erkläre</b> mit dem Induktions-Labor: Warum zeigt das Gerät das an? Benutze die Wörter <b>Magnetfeld</b> und <b>Elektronen</b>.</p>
+    <div class="situation"><svg viewBox="0 0 360 205" xmlns="http://www.w3.org/2000/svg" role="img"><rect x="76" y="6" width="88" height="68" rx="9" fill="#fff" stroke="#1d2b24" stroke-width="2.5"/><rect x="85" y="14" width="70" height="30" rx="4" fill="#e0f3e3" stroke="#1d2b24" stroke-width="1.5"/><text x="120" y="37" text-anchor="middle" font-family="Arial,sans-serif" font-weight="bold" font-size="22" fill="#1d2b24">0</text><circle cx="102" cy="60" r="5" fill="#1d2b24"/><circle cx="138" cy="60" r="5" fill="#e4574f"/><path d="M102 60 C100 92 65 86 65.0 108" fill="none" stroke="#1d2b24" stroke-width="2.5"/><path d="M138 60 C140 92 175 86 175.0 108" fill="none" stroke="#e4574f" stroke-width="2.5"/><path d="M72.9 192 A14.1 42 0 0 1 80.7 108 M88.6 192 A14.1 42 0 0 1 96.4 108 M104.3 192 A14.1 42 0 0 1 112.1 108 M120.0 192 A14.1 42 0 0 1 127.9 108 M135.7 192 A14.1 42 0 0 1 143.6 108 M151.4 192 A14.1 42 0 0 1 159.3 108 M167.1 192 A14.1 42 0 0 1 175.0 108" fill="none" stroke="#8f5526" stroke-width="4.5" stroke-linecap="round"/><g><rect x="234.0" y="135.0" width="46.0" height="30" rx="3" fill="#e4574f" stroke="#1d2b24" stroke-width="2"/><rect x="280" y="135.0" width="46.0" height="30" rx="3" fill="#58b36f" stroke="#1d2b24" stroke-width="2"/><text x="257.0" y="155.95" text-anchor="middle" font-family="Arial,sans-serif" font-weight="bold" font-size="17" fill="#fff">N</text><text x="303.0" y="155.95" text-anchor="middle" font-family="Arial,sans-serif" font-weight="bold" font-size="17" fill="#fff">S</text></g><path d="M65.0 108 A14.1 42 0 0 1 72.9 192 M80.7 108 A14.1 42 0 0 1 88.6 192 M96.4 108 A14.1 42 0 0 1 104.3 192 M112.1 108 A14.1 42 0 0 1 120.0 192 M127.9 108 A14.1 42 0 0 1 135.7 192 M143.6 108 A14.1 42 0 0 1 151.4 192 M159.3 108 A14.1 42 0 0 1 167.1 192" fill="none" stroke="#c8793a" stroke-width="4.5" stroke-linecap="round"/></svg><div><h3>Magnet bewegt sich nicht</h3><div class="zeilen"><i></i><i></i></div>
+      <div class="antwort">Das Magnetfeld in der Spule ändert sich nicht. Die Elektronen werden nicht verschoben, also keine Spannung.</div></div></div>
+    <div class="situation"><svg viewBox="0 0 360 205" xmlns="http://www.w3.org/2000/svg" role="img"><rect x="76" y="6" width="88" height="68" rx="9" fill="#fff" stroke="#1d2b24" stroke-width="2.5"/><rect x="85" y="14" width="70" height="30" rx="4" fill="#e0f3e3" stroke="#1d2b24" stroke-width="1.5"/><text x="120" y="37" text-anchor="middle" font-family="Arial,sans-serif" font-weight="bold" font-size="22" fill="#1d2b24">+</text><circle cx="102" cy="60" r="5" fill="#1d2b24"/><circle cx="138" cy="60" r="5" fill="#e4574f"/><path d="M102 60 C100 92 65 86 65.0 108" fill="none" stroke="#1d2b24" stroke-width="2.5"/><path d="M138 60 C140 92 175 86 175.0 108" fill="none" stroke="#e4574f" stroke-width="2.5"/><path d="M72.9 192 A14.1 42 0 0 1 80.7 108 M88.6 192 A14.1 42 0 0 1 96.4 108 M104.3 192 A14.1 42 0 0 1 112.1 108 M120.0 192 A14.1 42 0 0 1 127.9 108 M135.7 192 A14.1 42 0 0 1 143.6 108 M151.4 192 A14.1 42 0 0 1 159.3 108 M167.1 192 A14.1 42 0 0 1 175.0 108" fill="none" stroke="#8f5526" stroke-width="4.5" stroke-linecap="round"/><g><rect x="204.0" y="135.0" width="46.0" height="30" rx="3" fill="#e4574f" stroke="#1d2b24" stroke-width="2"/><rect x="250" y="135.0" width="46.0" height="30" rx="3" fill="#58b36f" stroke="#1d2b24" stroke-width="2"/><text x="227.0" y="155.95" text-anchor="middle" font-family="Arial,sans-serif" font-weight="bold" font-size="17" fill="#fff">N</text><text x="273.0" y="155.95" text-anchor="middle" font-family="Arial,sans-serif" font-weight="bold" font-size="17" fill="#fff">S</text></g><path d="M65.0 108 A14.1 42 0 0 1 72.9 192 M80.7 108 A14.1 42 0 0 1 88.6 192 M96.4 108 A14.1 42 0 0 1 104.3 192 M112.1 108 A14.1 42 0 0 1 120.0 192 M127.9 108 A14.1 42 0 0 1 135.7 192 M143.6 108 A14.1 42 0 0 1 151.4 192 M159.3 108 A14.1 42 0 0 1 167.1 192" fill="none" stroke="#c8793a" stroke-width="4.5" stroke-linecap="round"/><path d="M268 116 L217 116" stroke="#f0a30a" stroke-width="5" stroke-linecap="round"/><path d="M208 116 L221 108 L221 124 Z" fill="#f0a30a"/></svg><div><h3>Magnet bewegt sich zur Spule</h3><div class="zeilen"><i></i><i></i></div>
+      <div class="antwort">Das Magnetfeld in der Spule wird stärker. Die Elektronen werden auf eine Seite verschoben, es entsteht eine Spannung.</div></div></div>
+    <div class="situation"><svg viewBox="0 0 360 205" xmlns="http://www.w3.org/2000/svg" role="img"><rect x="76" y="6" width="88" height="68" rx="9" fill="#fff" stroke="#1d2b24" stroke-width="2.5"/><rect x="85" y="14" width="70" height="30" rx="4" fill="#e0f3e3" stroke="#1d2b24" stroke-width="1.5"/><text x="120" y="37" text-anchor="middle" font-family="Arial,sans-serif" font-weight="bold" font-size="22" fill="#1d2b24">−</text><circle cx="102" cy="60" r="5" fill="#1d2b24"/><circle cx="138" cy="60" r="5" fill="#e4574f"/><path d="M102 60 C100 92 65 86 65.0 108" fill="none" stroke="#1d2b24" stroke-width="2.5"/><path d="M138 60 C140 92 175 86 175.0 108" fill="none" stroke="#e4574f" stroke-width="2.5"/><path d="M72.9 192 A14.1 42 0 0 1 80.7 108 M88.6 192 A14.1 42 0 0 1 96.4 108 M104.3 192 A14.1 42 0 0 1 112.1 108 M120.0 192 A14.1 42 0 0 1 127.9 108 M135.7 192 A14.1 42 0 0 1 143.6 108 M151.4 192 A14.1 42 0 0 1 159.3 108 M167.1 192 A14.1 42 0 0 1 175.0 108" fill="none" stroke="#8f5526" stroke-width="4.5" stroke-linecap="round"/><g><rect x="204.0" y="135.0" width="46.0" height="30" rx="3" fill="#e4574f" stroke="#1d2b24" stroke-width="2"/><rect x="250" y="135.0" width="46.0" height="30" rx="3" fill="#58b36f" stroke="#1d2b24" stroke-width="2"/><text x="227.0" y="155.95" text-anchor="middle" font-family="Arial,sans-serif" font-weight="bold" font-size="17" fill="#fff">N</text><text x="273.0" y="155.95" text-anchor="middle" font-family="Arial,sans-serif" font-weight="bold" font-size="17" fill="#fff">S</text></g><path d="M65.0 108 A14.1 42 0 0 1 72.9 192 M80.7 108 A14.1 42 0 0 1 88.6 192 M96.4 108 A14.1 42 0 0 1 104.3 192 M112.1 108 A14.1 42 0 0 1 120.0 192 M127.9 108 A14.1 42 0 0 1 135.7 192 M143.6 108 A14.1 42 0 0 1 151.4 192 M159.3 108 A14.1 42 0 0 1 167.1 192" fill="none" stroke="#c8793a" stroke-width="4.5" stroke-linecap="round"/><path d="M232 116 L283 116" stroke="#f0a30a" stroke-width="5" stroke-linecap="round"/><path d="M292 116 L279 108 L279 124 Z" fill="#f0a30a"/></svg><div><h3>Magnet bewegt sich von der Spule weg</h3><div class="zeilen"><i></i><i></i></div>
+      <div class="antwort">Das Magnetfeld wird schwächer. Die Elektronen werden in die andere Richtung verschoben, das Vorzeichen wechselt.</div></div></div>
+  </div></div>
+
+  <div class="ausblick">Ausblick: Bei der Lampe schüttelt ihr von Hand. Wie macht ein Kraftwerk daraus dauerhaft Strom? Das klären wir beim Generator.</div>
+</div>
+</body>
+</html>

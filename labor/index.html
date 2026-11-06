@@ -1,0 +1,706 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Induktions-Labor</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%2358b36f'/%3E%3Crect x='10' y='24' width='22' height='16' fill='%23e4574f'/%3E%3Crect x='32' y='24' width='22' height='16' fill='%23fff'/%3E%3C/svg%3E">
+<style>
+:root{--ink:#1d2b24;--muted:#5b6c63;--line:#cfe0d3;--bg:#f1f8f0;--paper:#fff;--gruen:#58b36f;--gruen-dk:#2c7a46;--gruen-hell:#e0f3e3;--orange:#f0a30a;--blau:#2447a8}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:Verdana,Arial,Helvetica,sans-serif;line-height:1.5;font-size:16px;-webkit-text-size-adjust:100%}
+button{font:inherit;color:inherit;cursor:pointer;touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+button:focus-visible{outline:3px solid var(--gruen-dk);outline-offset:2px}
+.wrap{max-width:1040px;margin:0 auto;padding:12px 14px 40px}
+.top h1{font-family:"Arial Black","Helvetica Neue",Arial,sans-serif;font-size:clamp(23px,4vw,32px);line-height:1.1;margin:0}
+.top{display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap;margin-bottom:10px}
+.chip{display:inline-block;font-size:11px;font-weight:bold;letter-spacing:.08em;text-transform:uppercase;border:2px solid var(--gruen-dk);color:var(--gruen-dk);border-radius:999px;padding:2px 12px;background:#fff;margin-bottom:5px}
+.vorab{border:2px solid var(--ink);border-radius:14px;background:#fff8e6;padding:6px 14px;margin:0 0 12px;font-size:15px}
+.vorab summary{cursor:pointer;font-weight:bold;min-height:40px;display:list-item;padding-top:8px}
+.vorab ol{margin:4px 0 8px;padding-left:22px}
+.vorab a{color:var(--ink);font-weight:bold}
+.tabs{display:flex;gap:6px;align-items:flex-end;margin-bottom:-2px;position:relative;z-index:2}
+.tab{font-weight:bold;border:2px solid var(--ink);border-radius:14px 14px 0 0;background:#dff2e1;padding:10px 18px;min-height:50px}
+.tab[aria-selected=true]{background:var(--paper);border-bottom-color:var(--paper)}
+.panel{background:var(--paper);border:2px solid var(--ink);border-radius:0 18px 18px 18px;padding:16px}
+.panel[hidden]{display:none}
+#stage{display:block;width:100%;height:auto;touch-action:pan-y;user-select:none;-webkit-user-select:none;background:#fbfefb;border:2px solid var(--line);border-radius:14px}
+#griff{cursor:grab;outline:none}
+#griff:focus-visible .griffrand{stroke:var(--gruen-dk);stroke-dasharray:8 6}
+.status{margin:10px 0;padding:10px 14px;border-left:6px solid var(--gruen);background:#f3faf4;border-radius:0 10px 10px 0;min-height:68px;font-size:17px}
+.status.plus{border-left-color:var(--orange);background:#fff8e6}
+.steuer{display:grid;grid-template-columns:repeat(auto-fit,minmax(215px,1fr));gap:10px;margin:10px 0 14px}
+.gruppe{border:2px solid var(--ink);border-radius:12px;padding:7px 10px 10px}
+.gruppe>b{display:block;font-size:13px;color:var(--muted);margin-bottom:5px}
+.reihe{display:flex;gap:6px;flex-wrap:wrap}
+.opt{flex:1;min-height:46px;min-width:68px;border:2px solid var(--ink);border-radius:10px;background:#fff;font-weight:bold;font-size:14px;padding:4px 6px}
+.opt[aria-pressed=true]{background:var(--gruen);color:#fff;border-color:var(--gruen-dk)}
+.karten{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:10px}
+.karte{border:2px solid var(--ink);border-radius:12px;padding:10px 12px;font-size:14.5px}
+.karte h3{font-size:15px;margin:0 0 3px}
+.karte p{margin:0}
+.karte .fund{display:none;margin-top:6px;font-weight:bold;color:var(--gruen-dk)}
+.karte.ok{background:#e6f6e9;border-color:#1e9e4d}
+.karte.ok .fund{display:block}
+.karte.ok h3::after{content:" \2713";color:#1e9e4d}
+.fortschritt{font-weight:bold;margin:12px 0 8px}
+.sheet{max-width:860px;margin:0 auto}
+.kopf{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;border-bottom:3px solid var(--ink);padding-bottom:8px;margin-bottom:10px}
+.kopf .fach{font-size:13px;font-weight:bold;letter-spacing:.08em;text-transform:uppercase;color:var(--gruen-dk)}
+.kopf h1{font-size:25px;line-height:1.15;margin:2px 0 0}
+.namen{font-size:14px;color:var(--muted);white-space:nowrap}
+.namen span{display:inline-block;border-bottom:1.5px solid var(--ink);width:140px;margin-left:6px}
+.toolbar{position:sticky;top:0;z-index:10;background:linear-gradient(#fff 82%,rgba(255,255,255,0));padding:6px 0 12px;display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.tbtn{min-height:50px;border-radius:14px;border:2px solid var(--gruen-dk);background:var(--gruen);color:#fff;font-weight:bold;padding:8px 18px}
+.tbtn.alt{background:#fff;color:var(--gruen-dk)}
+#ergebnis{font-weight:bold}
+details.hilfe{font-size:14px;color:var(--muted);margin:0 0 10px}
+details.hilfe summary{cursor:pointer;min-height:32px}
+.aufgabe{background:var(--paper);border:2px solid var(--ink);border-radius:16px;padding:12px 16px 14px;margin:0 0 14px;break-inside:avoid;page-break-inside:avoid}
+.aufgabe h2{font-size:18px;margin:0 0 6px}
+.aufgabe h2 b{display:inline-block;background:var(--ink);color:#fff;border-radius:8px;padding:0 9px;margin-right:8px}
+.bank{display:flex;flex-wrap:wrap;gap:8px;align-items:center;background:#f3faf4;border:2px dashed var(--gruen);border-radius:12px;padding:7px 10px;margin:6px 0 10px}
+.bank>i{font-style:normal;font-size:12px;font-weight:bold;letter-spacing:.06em;text-transform:uppercase;color:var(--gruen-dk);margin-right:4px}
+.wort{min-height:44px;padding:5px 13px;border-radius:999px;border:2px solid var(--ink);background:#fff;font-weight:bold}
+.wort.sel{background:var(--orange);border-color:#9a6a05}
+.wort.used{opacity:.28;pointer-events:none}
+.luecke{display:inline-block;min-width:118px;min-height:34px;padding:0 8px;margin:0 2px;vertical-align:baseline;border:0;border-bottom:2.5px solid var(--ink);background:#f6faf6;color:var(--blau);font-weight:bold;text-align:center;border-radius:6px 6px 0 0}
+.luecke.kurz{min-width:62px}.luecke.lang{min-width:210px}
+.luecke.aktiv{background:#fff1cc;border-bottom-color:#9a6a05}
+.luecke.ok{background:#d9f2df;border-bottom-color:#1e9e4d}
+.luecke.bad{background:#fbdcd8;border-bottom-color:#d83a3a}
+.zeile{display:grid;grid-template-columns:minmax(0,230px) 1fr;gap:16px;align-items:center;padding:7px 0;border-top:1.5px solid var(--line)}
+.bank+.zeile{border-top:0}
+.zeile svg,.lampe-b svg{width:100%;height:auto;display:block}
+.zeile p,.merk p,.schluss,.desto,.faktoren p{margin:0;line-height:2.15}
+.nr{font-weight:bold;color:var(--gruen-dk)}
+.merk{border:3px solid var(--ink);border-radius:14px;padding:10px 14px;background:#f6fbf6}
+.faktoren{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.faktoren svg{width:100%;max-width:210px;height:auto;display:block;margin:0 auto 4px}
+.desto{text-align:center;font-weight:bold;margin-top:6px}
+.lampe-b{display:grid;grid-template-columns:minmax(0,1fr) 240px;gap:18px;align-items:center}
+.liste{list-style:none;margin:0;padding:0;display:grid;gap:10px}
+.liste li{display:flex;align-items:baseline;gap:10px}
+.z{display:inline-grid;place-items:center;width:30px;height:30px;border:2.5px solid var(--ink);border-radius:50%;flex:none}
+.schluss{margin-top:8px}
+body.sol .luecke::before{content:attr(data-ans)}
+.check{display:grid;gap:10px}
+.frage{display:grid;grid-template-columns:1fr auto;gap:12px;align-items:center;border:2px solid var(--ink);border-radius:12px;padding:10px 12px}
+.frage .wahl{display:flex;gap:6px}
+.frage.ok{background:#e6f6e9;border-color:#1e9e4d}.frage.bad{background:#fdeeec;border-color:#d83a3a}
+.frage small{display:block;color:var(--muted);margin-top:3px}
+@page{size:A4;margin:11mm 13mm}
+@media print{
+  body{background:#fff;font-size:11.5pt;line-height:1.38}
+  .wrap{max-width:none;padding:0}
+  .top,.vorab,.tabs,#labor,#check,.toolbar,details.hilfe{display:none !important}
+  .panel{display:block !important;border:0;padding:0}
+  .sheet{max-width:none}
+  .aufgabe{border-width:1.5px;margin:0 0 4mm;padding:3mm 4mm 3.5mm}
+  .luecke{background:none !important;border-bottom-color:#1d2b24 !important;min-height:0}
+  .wort{min-height:0;padding:1px 9px;font-size:10.5pt}
+  .bank{margin:1.5mm 0 2.5mm;padding:1.5mm 3mm}
+  .kopf h1{font-size:19pt}
+  .zeile{grid-template-columns:44mm 1fr;gap:5mm;padding:1mm 0}
+  .zeile p,.merk p,.schluss,.faktoren p{line-height:2}
+  .faktoren svg{max-width:40mm}
+  .lampe-b{grid-template-columns:minmax(0,1fr) 58mm}
+  .lampe-b svg{max-width:105mm}
+  body.sol .bank{display:none}
+}
+@media (max-width:640px){
+  .zeile,.faktoren,.lampe-b{grid-template-columns:1fr}
+  .zeile svg{max-width:330px}
+  .frage{grid-template-columns:1fr}
+  .kopf{flex-direction:column;align-items:flex-start}
+  .tab{flex:1;padding:10px 6px;font-size:14px}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <div><span class="chip">NT &middot; Klasse 8 &middot; Induktion</span><h1>Induktions-Labor</h1></div>
+  </header>
+
+  <details class="vorab" open>
+    <summary>Noch im Klassenzimmer? Erst das hier erledigen</summary>
+    <ol>
+      <li><a href="../material/forscherblatt.pdf" target="_blank" rel="noopener">Forscherblatt öffnen</a>, in Dateien sichern und in OneNote als Ausdruck einfügen.</li>
+      <li>Danach diese Seite offen lassen und nicht neu laden. Im NT-Raum läuft sie dann auch ohne WLAN.</li>
+    </ol>
+  </details>
+
+  <div class="tabs" role="tablist" aria-label="Bereiche">
+    <button class="tab" role="tab" id="tab-labor" aria-controls="labor" aria-selected="true">1 Labor</button>
+    <button class="tab" role="tab" id="tab-heft" aria-controls="heft" aria-selected="false">2 Hefteintrag</button>
+    <button class="tab" role="tab" id="tab-check" aria-controls="check" aria-selected="false">3 Mini-Check</button>
+  </div>
+
+  <section class="panel" id="labor" role="tabpanel" aria-labelledby="tab-labor">
+    <svg id="stage" viewBox="0 0 1000 470" role="application" aria-label="Spule mit Messgerät. Ziehe den Magneten mit dem Finger.">
+      <g id="feldlinien" fill="none" stroke="#7a8f83" stroke-dasharray="6 7" stroke-width="2"></g>
+
+      <!-- Anzeige Magnetfeld in der Spule -->
+      <g font-family="Verdana,Arial,sans-serif" fill="#1d2b24">
+        <text x="24" y="38" font-size="19" font-weight="bold">Magnetfeld in der Spule</text>
+        <rect x="24" y="52" width="290" height="26" rx="6" fill="#fff" stroke="#1d2b24" stroke-width="2"/>
+        <rect id="feldbalken" x="26" y="54" width="0" height="22" rx="4" fill="#58b36f"/>
+        <text id="feldtrend" x="24" y="110" font-size="20" font-weight="bold">bleibt gleich</text>
+      </g>
+
+      <!-- Verlauf der Spannung -->
+      <g font-family="Verdana,Arial,sans-serif" fill="#1d2b24">
+        <text x="686" y="38" font-size="19" font-weight="bold">Spannung im Verlauf</text>
+        <rect x="686" y="52" width="290" height="96" rx="8" fill="#fff" stroke="#1d2b24" stroke-width="2"/>
+        <path d="M686 100 H976" stroke="#cfe0d3" stroke-width="2"/>
+        <text x="692" y="72" font-size="16" fill="#5b6c63">+</text><text x="692" y="142" font-size="16" fill="#5b6c63">&#8722;</text>
+        <polyline id="verlauf" fill="none" stroke="#2c7a46" stroke-width="3" stroke-linejoin="round" points=""/>
+      </g>
+
+      <!-- Messgeraet -->
+      <g font-family="Verdana,Arial,sans-serif">
+        <rect x="372" y="10" width="256" height="166" rx="16" fill="#fff" stroke="#1d2b24" stroke-width="4"/>
+        <path d="M432 88 A68 68 0 0 1 568 88" fill="none" stroke="#1d2b24" stroke-width="3"/>
+        <path d="M500 20 V30" stroke="#1d2b24" stroke-width="3"/>
+        <text x="396" y="74" font-size="24" font-weight="bold" fill="#5b6c63">&#8722;</text><text x="586" y="74" font-size="24" font-weight="bold" fill="#5b6c63">+</text>
+        <line id="zeiger" x1="500" y1="88" x2="500" y2="32" stroke="#e4574f" stroke-width="5" stroke-linecap="round"/>
+        <circle cx="500" cy="88" r="7" fill="#1d2b24"/>
+        <rect x="412" y="100" width="176" height="46" rx="7" fill="#e0f3e3" stroke="#1d2b24" stroke-width="2"/>
+        <text id="digital" x="500" y="134" text-anchor="middle" font-size="31" font-weight="bold" fill="#1d2b24">0 mV</text>
+        <circle cx="430" cy="162" r="8" fill="#1d2b24"/><circle cx="570" cy="162" r="8" fill="#e4574f"/>
+      </g>
+      <path id="kabelS" fill="none" stroke="#1d2b24" stroke-width="5"/>
+      <path id="kabelR" fill="none" stroke="#e4574f" stroke-width="5"/>
+
+      <g id="spuleHinten"></g>
+      <g id="griff" tabindex="0" role="slider" aria-label="Magnet verschieben" aria-valuemin="110" aria-valuemax="890">
+        <rect class="griffrand" id="griffflaeche" width="250" height="130" fill="transparent" stroke="none" rx="14"/>
+        <g id="magnetbild"></g>
+      </g>
+      <g id="spuleVorne"></g>
+      <g id="elektronen"></g>
+
+      <g font-family="Verdana,Arial,sans-serif" font-size="18" font-weight="bold" text-anchor="middle">
+        <text id="endeL" x="300" y="246"></text>
+        <text id="endeR" x="700" y="246"></text>
+      </g>
+      <text x="500" y="458" text-anchor="middle" font-family="Verdana,Arial,sans-serif" font-size="16" fill="#5b6c63">Modellwerte, kein echtes Messgerät. Vergleiche mit deiner Messung.</text>
+    </svg>
+
+    <div class="status" id="status" aria-live="polite">Ziehe den Magneten mit dem Finger in die Spule und wieder heraus.</div>
+
+    <div class="steuer">
+      <div class="gruppe"><b>Windungen der Spule</b><div class="reihe">
+        <button class="opt" data-gr="n" data-wert="400" aria-pressed="true">400</button>
+        <button class="opt" data-gr="n" data-wert="1600" aria-pressed="false">1600</button>
+      </div></div>
+      <div class="gruppe"><b>Magnet</b><div class="reihe">
+        <button class="opt" data-gr="b" data-wert="1" aria-pressed="true">schwach</button>
+        <button class="opt" data-gr="b" data-wert="2" aria-pressed="false">stark</button>
+        <button class="opt" id="umdrehen" aria-pressed="false">umdrehen</button>
+      </div></div>
+      <div class="gruppe"><b>Automatisch bewegen</b><div class="reihe">
+        <button class="opt" id="autoLangsam">langsam hinein</button>
+        <button class="opt" id="autoSchnell">schnell hinein</button>
+        <button class="opt" id="autoRaus">schnell heraus</button>
+      </div></div>
+      <div class="gruppe"><b>Höchster Wert: <span id="spitze">0 mV</span></b><div class="reihe">
+        <button class="opt" id="spitzeNeu">Neu messen</button>
+      </div></div>
+    </div>
+
+    <div class="fortschritt" id="fortschritt">0 von 5 Entdeckungen</div>
+    <div class="karten" id="karten"></div>
+  </section>
+
+  <section class="panel" id="heft" role="tabpanel" aria-labelledby="tab-heft" hidden>
+<div class="sheet">
+  <header class="kopf">
+    <div><div class="fach">NT &middot; Klasse 8 &middot; Hefteintrag</div><h1>Induktion: Aus Bewegung wird Spannung</h1></div>
+    <div class="namen">Name<span></span><br>Datum<span></span></div>
+  </header>
+
+  <div class="toolbar">
+    <button class="tbtn" id="pruefen">Prüfen</button>
+    <button class="tbtn alt" id="leeren">Alles löschen</button>
+    <button class="tbtn alt" id="pdf">Als PDF sichern</button>
+    <span id="ergebnis" aria-live="polite"></span>
+  </div>
+  <details class="hilfe"><summary>So füllst du aus und sicherst das PDF</summary>
+    <p>Tippe ein Wort im Wortspeicher an, es leuchtet orange. Dann tippe auf die Lücke, in die es gehört. Tippst du eine ausgefüllte Lücke an, wird sie wieder leer. Mit "Prüfen" siehst du, was stimmt (grün) und was nicht (rot).</p>
+    <p><b>In OneNote:</b> Als PDF sichern, Vorschau mit zwei Fingern aufziehen, Teilen, In Dateien sichern. Dann in OneNote: Einfügen, Datei, dein PDF wählen, Ausdruck einfügen.</p>
+  </details>
+
+  <section class="aufgabe" id="a1">
+    <h2><b>1</b>Was passiert in der Spule?</h2>
+    <div class="bank"><i>Wortspeicher</i><button class="wort" type="button">schwächer</button><button class="wort" type="button">0</button><button class="wort" type="button">Vorzeichen</button><button class="wort" type="button">ändert</button><button class="wort" type="button">Elektronen</button><button class="wort" type="button">andere</button><button class="wort" type="button">stärker</button></div>
+    <div class="zeile">
+      <svg viewBox="0 0 360 205" xmlns="http://www.w3.org/2000/svg" role="img"><rect x="76" y="6" width="88" height="68" rx="9" fill="#fff" stroke="#1d2b24" stroke-width="2.5"/><rect x="85" y="14" width="70" height="30" rx="4" fill="#e0f3e3" stroke="#1d2b24" stroke-width="1.5"/><text x="120" y="37" text-anchor="middle" font-family="Arial,sans-serif" font-weight="bold" font-size="22" fill="#1d2b24">0</text><circle cx="102" cy="60" r="5" fill="#1d2b24"/><circle cx="138" cy="60" r="5" fill="#e4574f"/><path d="M102 60 C100 92 65 86 65.0 108" fill="none" stroke="#1d2b24" stroke-width="2.5"/><path d="M138 60 C140 92 175 86 175.0 108" fill="none" stroke="#e4574f" stroke-width="2.5"/><path d="M72.9 192 A14.1 42 0 0 1 80.7 108 M88.6 192 A14.1 42 0 0 1 96.4 108 M104.3 192 A14.1 42 0 0 1 112.1 108 M120.0 192 A14.1 42 0 0 1 127.9 108 M135.7 192 A14.1 42 0 0 1 143.6 108 M151.4 192 A14.1 42 0 0 1 159.3 108 M167.1 192 A14.1 42 0 0 1 175.0 108" fill="none" stroke="#8f5526" stroke-width="4.5" stroke-linecap="round"/><g><rect x="234.0" y="135.0" width="46.0" height="30" rx="3" fill="#e4574f" stroke="#1d2b24" stroke-width="2"/><rect x="280" y="135.0" width="46.0" height="30" rx="3" fill="#58b36f" stroke="#1d2b24" stroke-width="2"/><text x="257.0" y="155.95" text-anchor="middle" font-family="Arial,sans-serif" font-weight="bold" font-size="17" fill="#fff">N</text><text x="303.0" y="155.95" text-anchor="middle" font-family="Arial,sans-serif" font-weight="bold" font-size="17" fill="#fff">S</text></g><path d="M65.0 108 A14.1 42 0 0 1 72.9 192 M80.7 108 A14.1 42 0 0 1 88.6 192 M96.4 108 A14.1 42 0 0 1 104.3 192 M112.1 108 A14.1 42 0 0 1 120.0 192 M127.9 108 A14.1 42 0 0 1 135.7 192 M143.6 108 A14.1 42 0 0 1 151.4 192 M159.3 108 A14.1 42 0 0 1 167.1 192" fill="none" stroke="#c8793a" stroke-width="4.5" stroke-linecap="round"/></svg>
+      <p><span class="nr">Magnet ruht:</span> Das Magnetfeld in der Spule <button class="luecke" data-ans="ändert" aria-label="Lücke"></button> sich nicht. Das Messgerät zeigt <button class="luecke kurz" data-ans="0" aria-label="Lücke"></button> an.</p>
+    </div>
+    <div class="zeile">
+      <svg viewBox="0 0 360 205" xmlns="http://www.w3.org/2000/svg" role="img"><rect x="76" y="6" width="88" height="68" rx="9" fill="#fff" stroke="#1d2b24" stroke-width="2.5"/><rect x="85" y="14" width="70" height="30" rx="4" fill="#e0f3e3" stroke="#1d2b24" stroke-width="1.5"/><text x="120" y="37" text-anchor="middle" font-family="Arial,sans-serif" font-weight="bold" font-size="22" fill="#1d2b24">+</text><circle cx="102" cy="60" r="5" fill="#1d2b24"/><circle cx="138" cy="60" r="5" fill="#e4574f"/><path d="M102 60 C100 92 65 86 65.0 108" fill="none" stroke="#1d2b24" stroke-width="2.5"/><path d="M138 60 C140 92 175 86 175.0 108" fill="none" stroke="#e4574f" stroke-width="2.5"/><path d="M72.9 192 A14.1 42 0 0 1 80.7 108 M88.6 192 A14.1 42 0 0 1 96.4 108 M104.3 192 A14.1 42 0 0 1 112.1 108 M120.0 192 A14.1 42 0 0 1 127.9 108 M135.7 192 A14.1 42 0 0 1 143.6 108 M151.4 192 A14.1 42 0 0 1 159.3 108 M167.1 192 A14.1 42 0 0 1 175.0 108" fill="none" stroke="#8f5526" stroke-width="4.5" stroke-linecap="round"/><g><rect x="204.0" y="135.0" width="46.0" height="30" rx="3" fill="#e4574f" stroke="#1d2b24" stroke-width="2"/><rect x="250" y="135.0" width="46.0" height="30" rx="3" fill="#58b36f" stroke="#1d2b24" stroke-width="2"/><text x="227.0" y="155.95" text-anchor="middle" font-family="Arial,sans-serif" font-weight="bold" font-size="17" fill="#fff">N</text><text x="273.0" y="155.95" text-anchor="middle" font-family="Arial,sans-serif" font-weight="bold" font-size="17" fill="#fff">S</text></g><path d="M65.0 108 A14.1 42 0 0 1 72.9 192 M80.7 108 A14.1 42 0 0 1 88.6 192 M96.4 108 A14.1 42 0 0 1 104.3 192 M112.1 108 A14.1 42 0 0 1 120.0 192 M127.9 108 A14.1 42 0 0 1 135.7 192 M143.6 108 A14.1 42 0 0 1 151.4 192 M159.3 108 A14.1 42 0 0 1 167.1 192" fill="none" stroke="#c8793a" stroke-width="4.5" stroke-linecap="round"/><path d="M268 116 L217 116" stroke="#f0a30a" stroke-width="5" stroke-linecap="round"/><path d="M208 116 L221 108 L221 124 Z" fill="#f0a30a"/></svg>
+      <p><span class="nr">Magnet hinein:</span> Das Magnetfeld in der Spule wird <button class="luecke" data-ans="stärker" aria-label="Lücke"></button>. Die <button class="luecke" data-ans="Elektronen" aria-label="Lücke"></button> im Draht werden auf eine Seite verschoben. Es entsteht eine Spannung.</p>
+    </div>
+    <div class="zeile">
+      <svg viewBox="0 0 360 205" xmlns="http://www.w3.org/2000/svg" role="img"><rect x="76" y="6" width="88" height="68" rx="9" fill="#fff" stroke="#1d2b24" stroke-width="2.5"/><rect x="85" y="14" width="70" height="30" rx="4" fill="#e0f3e3" stroke="#1d2b24" stroke-width="1.5"/><text x="120" y="37" text-anchor="middle" font-family="Arial,sans-serif" font-weight="bold" font-size="22" fill="#1d2b24">−</text><circle cx="102" cy="60" r="5" fill="#1d2b24"/><circle cx="138" cy="60" r="5" fill="#e4574f"/><path d="M102 60 C100 92 65 86 65.0 108" fill="none" stroke="#1d2b24" stroke-width="2.5"/><path d="M138 60 C140 92 175 86 175.0 108" fill="none" stroke="#e4574f" stroke-width="2.5"/><path d="M72.9 192 A14.1 42 0 0 1 80.7 108 M88.6 192 A14.1 42 0 0 1 96.4 108 M104.3 192 A14.1 42 0 0 1 112.1 108 M120.0 192 A14.1 42 0 0 1 127.9 108 M135.7 192 A14.1 42 0 0 1 143.6 108 M151.4 192 A14.1 42 0 0 1 159.3 108 M167.1 192 A14.1 42 0 0 1 175.0 108" fill="none" stroke="#8f5526" stroke-width="4.5" stroke-linecap="round"/><g><rect x="204.0" y="135.0" width="46.0" height="30" rx="3" fill="#e4574f" stroke="#1d2b24" stroke-width="2"/><rect x="250" y="135.0" width="46.0" height="30" rx="3" fill="#58b36f" stroke="#1d2b24" stroke-width="2"/><text x="227.0" y="155.95" text-anchor="middle" font-family="Arial,sans-serif" font-weight="bold" font-size="17" fill="#fff">N</text><text x="273.0" y="155.95" text-anchor="middle" font-family="Arial,sans-serif" font-weight="bold" font-size="17" fill="#fff">S</text></g><path d="M65.0 108 A14.1 42 0 0 1 72.9 192 M80.7 108 A14.1 42 0 0 1 88.6 192 M96.4 108 A14.1 42 0 0 1 104.3 192 M112.1 108 A14.1 42 0 0 1 120.0 192 M127.9 108 A14.1 42 0 0 1 135.7 192 M143.6 108 A14.1 42 0 0 1 151.4 192 M159.3 108 A14.1 42 0 0 1 167.1 192" fill="none" stroke="#c8793a" stroke-width="4.5" stroke-linecap="round"/><path d="M232 116 L283 116" stroke="#f0a30a" stroke-width="5" stroke-linecap="round"/><path d="M292 116 L279 108 L279 124 Z" fill="#f0a30a"/></svg>
+      <p><span class="nr">Magnet heraus:</span> Das Magnetfeld wird <button class="luecke" data-ans="schwächer" aria-label="Lücke"></button>. Die Elektronen werden in die <button class="luecke" data-ans="andere" aria-label="Lücke"></button> Richtung verschoben. Die Spannung hat das umgekehrte <button class="luecke" data-ans="Vorzeichen" aria-label="Lücke"></button>.</p>
+    </div>
+  </section>
+
+  <section class="aufgabe" id="a2">
+    <h2><b>2</b>Das merke ich mir</h2>
+    <div class="bank"><i>Wortspeicher</i><button class="wort" type="button">Induktionsspannung</button><button class="wort" type="button">Induktion</button></div>
+    <div class="merk"><p>Ändert sich das Magnetfeld in einer Spule, entsteht eine Spannung. Diesen Vorgang nennt man <button class="luecke lang" data-ans="Induktion" aria-label="Lücke"></button>. Die Spannung heißt <button class="luecke lang" data-ans="Induktionsspannung" aria-label="Lücke"></button>.</p></div>
+  </section>
+
+  <section class="aufgabe" id="a3">
+    <h2><b>3</b>Wovon hängt die Spannung ab?</h2>
+    <div class="bank"><i>Wortspeicher</i><button class="wort" type="button">höher</button><button class="wort" type="button">stärker</button><button class="wort" type="button">Windungen</button><button class="wort" type="button">schneller</button></div>
+    <div class="faktoren">
+      <div><svg viewBox="0 0 215 90" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M27.2 75 A11.2 30 0 0 1 33.4 15 M39.6 75 A11.2 30 0 0 1 45.8 15 M52.0 75 A11.2 30 0 0 1 58.2 15 M64.4 75 A11.2 30 0 0 1 70.6 15 M76.8 75 A11.2 30 0 0 1 83.0 15" fill="none" stroke="#8f5526" stroke-width="3.5" stroke-linecap="round"/><g><rect x="107.0" y="33.0" width="35.0" height="24" rx="3" fill="#e4574f" stroke="#1d2b24" stroke-width="2"/><rect x="142" y="33.0" width="35.0" height="24" rx="3" fill="#58b36f" stroke="#1d2b24" stroke-width="2"/><text x="124.5" y="49.55" text-anchor="middle" font-family="Arial,sans-serif" font-weight="bold" font-size="13" fill="#fff">N</text><text x="159.5" y="49.55" text-anchor="middle" font-family="Arial,sans-serif" font-weight="bold" font-size="13" fill="#fff">S</text></g><path d="M21.0 15 A11.2 30 0 0 1 27.2 75 M33.4 15 A11.2 30 0 0 1 39.6 75 M45.8 15 A11.2 30 0 0 1 52.0 75 M58.2 15 A11.2 30 0 0 1 64.4 75 M70.6 15 A11.2 30 0 0 1 76.8 75" fill="none" stroke="#c8793a" stroke-width="3.5" stroke-linecap="round"/><path d="M186 33 L208 33" stroke="#f0a30a" stroke-width="4" stroke-linecap="round"/><path d="M186 45 L208 45" stroke="#f0a30a" stroke-width="4" stroke-linecap="round"/><path d="M186 57 L208 57" stroke="#f0a30a" stroke-width="4" stroke-linecap="round"/><path d="M112 18 L99 18" stroke="#f0a30a" stroke-width="5" stroke-linecap="round"/><path d="M90 18 L103 10 L103 26 Z" fill="#f0a30a"/></svg><p>Je <button class="luecke" data-ans="schneller" aria-label="Lücke"></button> sich der Magnet bewegt,</p></div>
+      <div><svg viewBox="0 0 215 90" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><g><rect x="18.0" y="36.0" width="28.0" height="18" rx="3" fill="#e4574f" stroke="#1d2b24" stroke-width="2"/><rect x="46" y="36.0" width="28.0" height="18" rx="3" fill="#58b36f" stroke="#1d2b24" stroke-width="2"/><text x="32.0" y="48.85" text-anchor="middle" font-family="Arial,sans-serif" font-weight="bold" font-size="11" fill="#fff">N</text><text x="60.0" y="48.85" text-anchor="middle" font-family="Arial,sans-serif" font-weight="bold" font-size="11" fill="#fff">S</text></g><g><rect x="92.0" y="22.0" width="58.0" height="46" rx="3" fill="#e4574f" stroke="#1d2b24" stroke-width="2"/><rect x="150" y="22.0" width="58.0" height="46" rx="3" fill="#58b36f" stroke="#1d2b24" stroke-width="2"/><text x="121.0" y="52.0" text-anchor="middle" font-family="Arial,sans-serif" font-weight="bold" font-size="20" fill="#fff">N</text><text x="179.0" y="52.0" text-anchor="middle" font-family="Arial,sans-serif" font-weight="bold" font-size="20" fill="#fff">S</text></g><path d="M80 45 L86 45 M82 39 L88 45 L82 51" fill="none" stroke="#f0a30a" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg><p>je <button class="luecke" data-ans="stärker" aria-label="Lücke"></button> der Magnet ist und</p></div>
+      <div><svg viewBox="0 0 215 90" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M28.8 75 A14.0 30 0 0 1 36.5 15 M44.2 75 A14.0 30 0 0 1 52.0 15 M59.8 75 A14.0 30 0 0 1 67.5 15 M75.2 75 A14.0 30 0 0 1 83.0 15" fill="none" stroke="#8f5526" stroke-width="3.5" stroke-linecap="round"/><path d="M21.0 15 A14.0 30 0 0 1 28.8 75 M36.5 15 A14.0 30 0 0 1 44.2 75 M52.0 15 A14.0 30 0 0 1 59.8 75 M67.5 15 A14.0 30 0 0 1 75.2 75" fill="none" stroke="#c8793a" stroke-width="3.5" stroke-linecap="round"/><path d="M124.1 75 A7.8 30 0 0 1 127.2 15 M130.2 75 A7.8 30 0 0 1 133.3 15 M136.4 75 A7.8 30 0 0 1 139.5 15 M142.6 75 A7.8 30 0 0 1 145.7 15 M148.8 75 A7.8 30 0 0 1 151.8 15 M154.9 75 A7.8 30 0 0 1 158.0 15 M161.1 75 A7.8 30 0 0 1 164.2 15 M167.3 75 A7.8 30 0 0 1 170.3 15 M173.4 75 A7.8 30 0 0 1 176.5 15 M179.6 75 A7.8 30 0 0 1 182.7 15 M185.8 75 A7.8 30 0 0 1 188.8 15 M191.9 75 A7.8 30 0 0 1 195.0 15" fill="none" stroke="#8f5526" stroke-width="2.5" stroke-linecap="round"/><path d="M121.0 15 A7.8 30 0 0 1 124.1 75 M127.2 15 A7.8 30 0 0 1 130.2 75 M133.3 15 A7.8 30 0 0 1 136.4 75 M139.5 15 A7.8 30 0 0 1 142.6 75 M145.7 15 A7.8 30 0 0 1 148.8 75 M151.8 15 A7.8 30 0 0 1 154.9 75 M158.0 15 A7.8 30 0 0 1 161.1 75 M164.2 15 A7.8 30 0 0 1 167.3 75 M170.3 15 A7.8 30 0 0 1 173.4 75 M176.5 15 A7.8 30 0 0 1 179.6 75 M182.7 15 A7.8 30 0 0 1 185.8 75 M188.8 15 A7.8 30 0 0 1 191.9 75" fill="none" stroke="#c8793a" stroke-width="2.5" stroke-linecap="round"/><path d="M96 45 L104 45 M100 39 L106 45 L100 51" fill="none" stroke="#f0a30a" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg><p>je mehr <button class="luecke" data-ans="Windungen" aria-label="Lücke"></button> die Spule hat,</p></div>
+    </div>
+    <p class="desto">desto <button class="luecke" data-ans="höher" aria-label="Lücke"></button> ist die Induktionsspannung.</p>
+  </section>
+
+  <section class="aufgabe" id="a4">
+    <h2><b>4</b>Das Rätsel: Licht ohne Batterie</h2>
+    <div class="bank"><i>Wortspeicher</i><button class="wort" type="button">Spule</button><button class="wort" type="button">elektrische</button><button class="wort" type="button">LED</button><button class="wort" type="button">Bewegungsenergie</button><button class="wort" type="button">Magnet</button></div>
+    <div class="lampe-b">
+      <svg viewBox="0 0 420 148" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Schnittbild einer Schüttellampe mit Magnet, Spule und LED"><path d="M72 54 L104 62 L104 108 L72 116 Z" fill="#eef6f2" stroke="#1d2b24" stroke-width="3" stroke-linejoin="round"/><rect x="102" y="58" width="306" height="54" rx="20" fill="#f5fbf8" stroke="#1d2b24" stroke-width="3"/><path d="M72 74 a13 13 0 0 1 0 22 Z" transform="translate(16 0)" fill="#fff" stroke="#1d2b24" stroke-width="2.5"/><rect x="128" y="62" width="14" height="46" rx="4" fill="#9aa8a0"/><rect x="384" y="62" width="14" height="46" rx="4" fill="#9aa8a0"/><path d="M183.1 115 A7.8 30 0 0 1 187.2 55 M191.3 115 A7.8 30 0 0 1 195.4 55 M199.6 115 A7.8 30 0 0 1 203.7 55 M207.8 115 A7.8 30 0 0 1 211.9 55 M216.0 115 A7.8 30 0 0 1 220.1 55 M224.2 115 A7.8 30 0 0 1 228.3 55 M232.4 115 A7.8 30 0 0 1 236.6 55 M240.7 115 A7.8 30 0 0 1 244.8 55 M248.9 115 A7.8 30 0 0 1 253.0 55" fill="none" stroke="#8f5526" stroke-width="3.6" stroke-linecap="round"/><g><rect x="272.0" y="74.0" width="36.0" height="22" rx="3" fill="#e4574f" stroke="#1d2b24" stroke-width="2"/><rect x="308" y="74.0" width="36.0" height="22" rx="3" fill="#58b36f" stroke="#1d2b24" stroke-width="2"/><text x="290.0" y="89.55" text-anchor="middle" font-family="Arial,sans-serif" font-weight="bold" font-size="13" fill="#fff">N</text><text x="326.0" y="89.55" text-anchor="middle" font-family="Arial,sans-serif" font-weight="bold" font-size="13" fill="#fff">S</text></g><path d="M179.0 55 A7.8 30 0 0 1 183.1 115 M187.2 55 A7.8 30 0 0 1 191.3 115 M195.4 55 A7.8 30 0 0 1 199.6 115 M203.7 55 A7.8 30 0 0 1 207.8 115 M211.9 55 A7.8 30 0 0 1 216.0 115 M220.1 55 A7.8 30 0 0 1 224.2 115 M228.3 55 A7.8 30 0 0 1 232.4 115 M236.6 55 A7.8 30 0 0 1 240.7 115 M244.8 55 A7.8 30 0 0 1 248.9 115" fill="none" stroke="#c8793a" stroke-width="3.6" stroke-linecap="round"/><path d="M290 132 L331 132" stroke="#f0a30a" stroke-width="5" stroke-linecap="round"/><path d="M340 132 L327 124 L327 140 Z" fill="#f0a30a"/><path d="M286 132 L259 132" stroke="#f0a30a" stroke-width="5" stroke-linecap="round"/><path d="M250 132 L263 124 L263 140 Z" fill="#f0a30a"/><path d="M308 74 L318 40" stroke="#1d2b24" stroke-width="2"/><circle cx="318" cy="28" r="14" fill="#fff" stroke="#1d2b24" stroke-width="2.5"/><text x="318" y="34" text-anchor="middle" font-family="Arial,sans-serif" font-weight="bold" font-size="17" fill="#1d2b24">1</text><path d="M216 55 L216 40" stroke="#1d2b24" stroke-width="2"/><circle cx="216" cy="28" r="14" fill="#fff" stroke="#1d2b24" stroke-width="2.5"/><text x="216" y="34" text-anchor="middle" font-family="Arial,sans-serif" font-weight="bold" font-size="17" fill="#1d2b24">2</text><path d="M92 76 L92 40" stroke="#1d2b24" stroke-width="2"/><circle cx="92" cy="28" r="14" fill="#fff" stroke="#1d2b24" stroke-width="2.5"/><text x="92" y="34" text-anchor="middle" font-family="Arial,sans-serif" font-weight="bold" font-size="17" fill="#1d2b24">3</text></svg>
+      <ul class="liste">
+        <li><b class="z">1</b><button class="luecke" data-ans="Magnet" aria-label="Bauteil 1"></button></li>
+        <li><b class="z">2</b><button class="luecke" data-ans="Spule" aria-label="Bauteil 2"></button></li>
+        <li><b class="z">3</b><button class="luecke" data-ans="LED" aria-label="Bauteil 3"></button></li>
+      </ul>
+    </div>
+    <p class="schluss">Beim Schütteln bewegt sich der Magnet durch die Spule. So wird aus <button class="luecke" data-ans="Bewegungsenergie" aria-label="Lücke"></button> dann <button class="luecke" data-ans="elektrische" aria-label="Lücke"></button> Energie.</p>
+  </section>
+</div>
+
+  </section>
+
+  <section class="panel" id="check" role="tabpanel" aria-labelledby="tab-check" hidden>
+    <h2 style="margin:0 0 4px;font-size:21px">Mini-Check: Was macht die Spannung höher?</h2>
+    <p style="margin:0 0 12px;color:var(--muted)">Tippe bei jeder Karte an, was stimmt.</p>
+    <div class="check" id="fragen"></div>
+    <p class="fortschritt" id="checkErgebnis" aria-live="polite"></p>
+    <button class="tbtn alt" id="checkNeu">Noch einmal</button>
+  </section>
+</div>
+
+<script>
+// PHYSIK-START
+var PHYS = { a: 130, K: 0.038 };
+// Anteil des Magnetfelds in der Spule, abhaengig vom Abstand x des Magneten zur Spulenmitte (0 bis 1)
+function feldAnteil(x) { var q = x / PHYS.a; return Math.pow(1 + q * q, -1.5); }
+// Aenderung des Feldanteils pro Bildpunkt
+function feldSteigung(x) { var q = x / PHYS.a; return -3 * x / (PHYS.a * PHYS.a) * Math.pow(1 + q * q, -2.5); }
+// Modellspannung in mV. x: Abstand zur Mitte, v: Tempo in Bildpunkten pro Sekunde (+ nach rechts),
+// n: Windungen, b: Magnetstaerke, pol: +1 oder -1. Magnet von rechts in die Spule ergibt mit pol +1 einen positiven Wert.
+function spannung(x, v, n, b, pol) { return PHYS.K * n * b * pol * feldSteigung(x) * v; }
+// PHYSIK-ENDE
+
+(function () {
+  var NS = 'http://www.w3.org/2000/svg';
+  var CX = 500, CY = 330, HALB = 120, R = 78, XMIN = 110, XMAX = 890, START = 840;
+  var z = { x: START, vf: 0, u: 0, s: 0, n: 400, b: 1, pol: 1, spitze: 0, auto: null, zieht: false };
+  var el = function (id) { return document.getElementById(id); };
+
+  function nsEl(name, attrs, parent) {
+    var e = document.createElementNS(NS, name);
+    Object.keys(attrs).forEach(function (k) { e.setAttribute(k, attrs[k]); });
+    if (parent) { parent.appendChild(e); }
+    return e;
+  }
+
+  // ------------------------------------------------ Kabel, Spule und Weg der Elektronen
+  var weg = [];
+  function bezier(p0, p1, p2, schritte, hinten) {
+    for (var i = 0; i <= schritte; i++) {
+      var t = i / schritte, m = 1 - t;
+      weg.push({ x: m * m * p0[0] + 2 * m * t * p1[0] + t * t * p2[0], y: m * m * p0[1] + 2 * m * t * p1[1] + t * t * p2[1], hinten: hinten });
+    }
+  }
+  function spuleZeichnen() {
+    var wind = z.n === 400 ? 7 : 14;
+    var breite = z.n === 400 ? 8 : 4.5;
+    var schritt = 2 * HALB / wind, rx = Math.max(R * 0.26, schritt * 0.9);
+    var x0 = CX - HALB, vorn = '', hint = '';
+    weg = [];
+    bezier([430, 162], [386, 200], [x0, CY - R], 14, false);
+    for (var i = 0; i < wind; i++) {
+      var x = x0 + i * schritt;
+      vorn += 'M' + x + ' ' + (CY - R) + ' A' + rx + ' ' + R + ' 0 0 1 ' + (x + schritt / 2) + ' ' + (CY + R) + ' ';
+      hint += 'M' + (x + schritt / 2) + ' ' + (CY + R) + ' A' + rx + ' ' + R + ' 0 0 1 ' + (x + schritt) + ' ' + (CY - R) + ' ';
+      for (var k = 0; k <= 12; k++) {
+        var f = k / 12, w = -Math.PI / 2 + Math.PI * f;
+        weg.push({ x: x + schritt / 2 * f + rx * Math.cos(w), y: CY + R * Math.sin(w), hinten: false });
+      }
+      for (k = 0; k <= 12; k++) {
+        f = k / 12; w = Math.PI / 2 + Math.PI * f;
+        weg.push({ x: x + schritt / 2 + schritt / 2 * f + rx * Math.cos(w), y: CY + R * Math.sin(w), hinten: true });
+      }
+    }
+    bezier([CX + HALB, CY - R], [614, 200], [570, 162], 14, false);
+    // Laenge entlang des Wegs, damit die Elektronen gleichmaessig verteilt sind
+    var sum = 0;
+    weg[0].l = 0;
+    for (i = 1; i < weg.length; i++) { sum += Math.hypot(weg[i].x - weg[i - 1].x, weg[i].y - weg[i - 1].y); weg[i].l = sum; }
+    weg.forEach(function (p) { p.l /= sum; });
+    el('spuleHinten').innerHTML = '<path d="' + hint + '" fill="none" stroke="#8f5526" stroke-width="' + breite + '" stroke-linecap="round"/>';
+    el('spuleVorne').innerHTML = '<path d="' + vorn + '" fill="none" stroke="#c8793a" stroke-width="' + breite + '" stroke-linecap="round"/>';
+    el('kabelS').setAttribute('d', 'M430 162 Q386 200 ' + x0 + ' ' + (CY - R));
+    el('kabelR').setAttribute('d', 'M' + (CX + HALB) + ' ' + (CY - R) + ' Q614 200 570 162');
+    var g = el('elektronen'), anzahl = z.n === 400 ? 38 : 48;
+    g.innerHTML = '';
+    elektronen = [];
+    for (i = 0; i < anzahl; i++) { elektronen.push(nsEl('circle', { r: 5.5, fill: '#4a90d9', stroke: '#1d4f86', 'stroke-width': 1.5 }, g)); }
+    letztesS = null;
+  }
+  var elektronen = [], letztesS = null;
+
+  function wegPunkt(u) {
+    var lo = 0, hi = weg.length - 1;
+    while (hi - lo > 1) { var mid = (lo + hi) >> 1; if (weg[mid].l < u) { lo = mid; } else { hi = mid; } }
+    return u - weg[lo].l < weg[hi].l - u ? weg[lo] : weg[hi];
+  }
+  function elektronenSetzen() {
+    if (letztesS !== null && Math.abs(z.s - letztesS) < 0.004) { return; }
+    letztesS = z.s;
+    // Positive Spannung: Elektronen ruecken zum schwarzen Anschluss (Anfang des Wegs)
+    var gamma = Math.exp(z.s * 1.5);
+    elektronen.forEach(function (c, i) {
+      var u = Math.pow((i + 0.5) / elektronen.length, gamma), p = wegPunkt(u);
+      c.setAttribute('cx', p.x.toFixed(1));
+      c.setAttribute('cy', p.y.toFixed(1));
+      c.setAttribute('opacity', p.hinten ? 0.15 : 1);
+    });
+  }
+
+  // ------------------------------------------------ Magnet
+  function magnetZeichnen() {
+    var breite = 190, hoch = z.b === 2 ? 64 : 44, schrift = z.b === 2 ? 30 : 23;
+    var links = z.pol > 0 ? ['#e4574f', 'N'] : ['#58b36f', 'S'], rechts = z.pol > 0 ? ['#58b36f', 'S'] : ['#e4574f', 'N'];
+    el('magnetbild').innerHTML =
+      '<rect x="' + (-breite / 2) + '" y="' + (-hoch / 2) + '" width="' + (breite / 2) + '" height="' + hoch + '" rx="4" fill="' + links[0] + '" stroke="#1d2b24" stroke-width="3"/>' +
+      '<rect x="0" y="' + (-hoch / 2) + '" width="' + (breite / 2) + '" height="' + hoch + '" rx="4" fill="' + rechts[0] + '" stroke="#1d2b24" stroke-width="3"/>' +
+      '<text x="' + (-breite / 4) + '" y="' + (schrift * 0.36) + '" text-anchor="middle" font-family="Arial,sans-serif" font-weight="bold" font-size="' + schrift + '" fill="#fff">' + links[1] + '</text>' +
+      '<text x="' + (breite / 4) + '" y="' + (schrift * 0.36) + '" text-anchor="middle" font-family="Arial,sans-serif" font-weight="bold" font-size="' + schrift + '" fill="#fff">' + rechts[1] + '</text>';
+    var linien = z.b === 2 ? [[130, 62], [158, 88], [186, 112]] : [[124, 48], [150, 72]];
+    el('feldlinien').innerHTML = linien.map(function (l) { return '<ellipse rx="' + l[0] + '" ry="' + l[1] + '"/>'; }).join('');
+    el('griffflaeche').setAttribute('x', -125);
+    el('griffflaeche').setAttribute('y', -65);
+    letzterX = null;
+  }
+  var letzterX = null;
+  function magnetSetzen() {
+    if (letzterX !== null && Math.abs(z.x - letzterX) < 0.2) { return; }
+    letzterX = z.x;
+    var tr = 'translate(' + z.x.toFixed(1) + ' ' + CY + ')';
+    el('griff').setAttribute('transform', tr);
+    el('feldlinien').setAttribute('transform', tr);
+    el('griff').setAttribute('aria-valuenow', Math.round(z.x));
+  }
+
+  // ------------------------------------------------ Anzeigen
+  var alt = {};
+  function setzeText(id, t) { if (alt[id] !== t) { alt[id] = t; el(id).textContent = t; } }
+  function mV(u) {
+    var r = Math.round(u);
+    return (r > 0 ? '+' : r < 0 ? '−' : '') + Math.abs(r) + ' mV';
+  }
+  var verlauf = [], verlaufTakt = 0;
+  function verlaufSetzen(dt) {
+    verlaufTakt += dt;
+    if (verlaufTakt < 0.04) { return; }
+    verlaufTakt = 0;
+    verlauf.push(z.u);
+    if (verlauf.length > 140) { verlauf.shift(); }
+    var kette = verlauf.map(function (u, i) {
+      var y = 100 - Math.max(-44, Math.min(44, u / 650 * 44));
+      return (976 - (verlauf.length - 1 - i) * 2).toFixed(0) + ',' + y.toFixed(1);
+    }).join(' ');
+    if (alt.kette !== kette) { alt.kette = kette; el('verlauf').setAttribute('points', kette); }
+  }
+  function anzeigen(aenderung) {
+    var winkel = Math.max(-62, Math.min(62, z.u / 650 * 62));
+    var w = (winkel * Math.PI / 180);
+    var zx = (500 + 56 * Math.sin(w)).toFixed(1), zy = (88 - 56 * Math.cos(w)).toFixed(1);
+    if (alt.zx !== zx || alt.zy !== zy) { alt.zx = zx; alt.zy = zy; el('zeiger').setAttribute('x2', zx); el('zeiger').setAttribute('y2', zy); }
+    setzeText('digital', mV(z.u));
+    setzeText('spitze', mV(z.spitze));
+    var anteil = feldAnteil(z.x - CX);
+    var bw = (Math.min(1, anteil * z.b / 2) * 286).toFixed(0);
+    if (alt.bw !== bw) { alt.bw = bw; el('feldbalken').setAttribute('width', bw); }
+    var stark = Math.abs(z.u) >= 1;
+    setzeText('feldtrend', !stark ? 'bleibt gleich' : aenderung > 0 ? 'wird stärker' : 'wird schwächer');
+    // Elektronen-Enden
+    var deutlich = Math.abs(z.s) > 0.22;
+    setzeText('endeL', !deutlich ? '' : z.s > 0 ? 'Überschuss' : 'Mangel');
+    setzeText('endeR', !deutlich ? '' : z.s > 0 ? 'Mangel' : 'Überschuss');
+    // Erklaerung
+    var inSpule = Math.abs(z.x - CX) < HALB, text;
+    if (!stark && inSpule) {
+      text = 'Der Magnet steckt in der Spule, aber das Feld ändert sich gerade nicht. Deshalb zeigt das Gerät 0.';
+    } else if (!stark) {
+      text = 'Das Magnetfeld in der Spule ändert sich nicht. Die Elektronen bleiben gleichmäßig verteilt: 0.';
+    } else if (aenderung > 0) {
+      text = 'Das Magnetfeld in der Spule wird stärker. Die Elektronen werden auf eine Seite verschoben. Es entsteht eine Spannung.';
+    } else {
+      text = 'Das Magnetfeld in der Spule wird schwächer. Die Elektronen werden in die andere Richtung verschoben. Das Vorzeichen wechselt.';
+    }
+    if (alt.status !== text) { alt.status = text; el('status').textContent = text; el('status').classList.toggle('plus', stark); }
+  }
+
+  // ------------------------------------------------ Entdeckungen
+  var KARTEN = [
+    { id: 'ruhe', t: 'Magnet in Ruhe', a: 'Schiebe den Magneten in die Spule und halte ihn dort ruhig.', f: 'Ruht der Magnet, ist die Spannung 0, auch mitten in der Spule.' },
+    { id: 'richtung', t: 'Hinein und heraus', a: 'Bewege den Magneten hinein und wieder heraus. Achte auf das Vorzeichen.', f: 'Hinein und heraus ergeben entgegengesetzte Vorzeichen.' },
+    { id: 'tempo', t: 'Langsam und schnell', a: 'Bewege den Magneten einmal langsam und einmal schnell.', f: 'Je schneller die Bewegung, desto höher die Spannung.' },
+    { id: 'windung', t: 'Mehr Windungen', a: 'Bewege den Magneten bei 400 und bei 1600 Windungen.', f: 'Je mehr Windungen, desto höher die Spannung.' },
+    { id: 'staerke', t: 'Starker Magnet', a: 'Bewege den schwachen und den starken Magneten.', f: 'Je stärker der Magnet, desto höher die Spannung.' }
+  ];
+  var erledigt = {};
+  el('karten').innerHTML = KARTEN.map(function (k) {
+    return '<article class="karte" id="k-' + k.id + '"><h3>' + k.t + '</h3><p>' + k.a + '</p><p class="fund">' + k.f + '</p></article>';
+  }).join('');
+  function entdeckt(id) {
+    if (erledigt[id]) { return; }
+    erledigt[id] = true;
+    el('k-' + id).classList.add('ok');
+    var n = Object.keys(erledigt).length;
+    el('fortschritt').textContent = n + ' von 5 Entdeckungen' + (n === 5 ? ': alles gefunden. Weiter zum Hefteintrag!' : '');
+  }
+  var spur = { ruheZeit: 0, stark: false, schwach: false, n400: false, n1600: false, b1: false, b2: false, langsam: 0, schnell: false };
+  function spuren(dt, aenderung) {
+    var tempo = Math.abs(z.vf), bewegt = Math.abs(z.u) > 3;
+    if (Math.abs(z.x - CX) < HALB && tempo < 5) { spur.ruheZeit += dt; } else { spur.ruheZeit = 0; }
+    if (spur.ruheZeit > 1.2) { entdeckt('ruhe'); }
+    if (bewegt && aenderung > 0) { spur.stark = true; }
+    if (bewegt && aenderung < 0) { spur.schwach = true; }
+    if (spur.stark && spur.schwach) { entdeckt('richtung'); }
+    if (tempo > 40 && tempo < 260 && Math.abs(z.u) > 1) { spur.langsam += dt; }
+    if (tempo > 520) { spur.schnell = true; }
+    if (spur.langsam > 0.3 && spur.schnell) { entdeckt('tempo'); }
+    if (bewegt) {
+      spur['n' + z.n] = true;
+      spur['b' + z.b] = true;
+      if (spur.n400 && spur.n1600) { entdeckt('windung'); }
+      if (spur.b1 && spur.b2) { entdeckt('staerke'); }
+    }
+  }
+
+  // ------------------------------------------------ Bewegung
+  function autoStart(von, nach, tempo) {
+    z.x = von; letzteX = von; z.vf = 0;
+    z.auto = { nach: nach, tempo: tempo };
+    z.spitze = 0;
+  }
+  el('autoLangsam').addEventListener('click', function () { autoStart(START, CX, 160); });
+  el('autoSchnell').addEventListener('click', function () { autoStart(START, CX, 800); });
+  el('autoRaus').addEventListener('click', function () { autoStart(CX, START, 800); });
+  el('spitzeNeu').addEventListener('click', function () { z.spitze = 0; });
+
+  var stage = el('stage'), griff = el('griff'), versatz = 0, zielX = START;
+  function stageX(e) {
+    var box = stage.getBoundingClientRect();
+    return (e.clientX - box.left) / box.width * 1000;
+  }
+  griff.addEventListener('pointerdown', function (e) {
+    z.zieht = true; z.auto = null;
+    versatz = stageX(e) - z.x;
+    zielX = z.x;
+    griff.setPointerCapture(e.pointerId);
+    griff.style.cursor = 'grabbing';
+    e.preventDefault();
+  });
+  griff.addEventListener('pointermove', function (e) {
+    if (!z.zieht) { return; }
+    zielX = Math.max(XMIN, Math.min(XMAX, stageX(e) - versatz));
+  });
+  function loslassen() { z.zieht = false; griff.style.cursor = 'grab'; }
+  griff.addEventListener('pointerup', loslassen);
+  griff.addEventListener('pointercancel', loslassen);
+  griff.addEventListener('touchmove', function (e) { if (z.zieht) { e.preventDefault(); } }, { passive: false });
+  griff.addEventListener('keydown', function (e) {
+    var d = e.key === 'ArrowLeft' ? -24 : e.key === 'ArrowRight' ? 24 : 0;
+    if (d) { z.auto = null; z.tasteZiel = Math.max(XMIN, Math.min(XMAX, z.x + d)); e.preventDefault(); }
+  });
+
+  // Umschalter
+  document.querySelectorAll('.opt[data-gr]').forEach(function (b) {
+    b.addEventListener('click', function () {
+      var gr = b.getAttribute('data-gr');
+      document.querySelectorAll('.opt[data-gr="' + gr + '"]').forEach(function (o) { o.setAttribute('aria-pressed', String(o === b)); });
+      z[gr] = Number(b.getAttribute('data-wert'));
+      z.spitze = 0;
+      if (gr === 'n') { spuleZeichnen(); } else { magnetZeichnen(); }
+    });
+  });
+  el('umdrehen').addEventListener('click', function () {
+    z.pol = -z.pol;
+    el('umdrehen').setAttribute('aria-pressed', String(z.pol < 0));
+    z.spitze = 0;
+    magnetZeichnen();
+  });
+
+  // ------------------------------------------------ Hauptschleife
+  var letzteZeit = null, letzteX = z.x;
+  function bild(jetzt) {
+    if (letzteZeit === null) { letzteZeit = jetzt; }
+    var dt = Math.min(0.05, (jetzt - letzteZeit) / 1000);
+    letzteZeit = jetzt;
+    if (dt > 0) {
+      if (z.zieht) {
+        z.x = zielX;
+      } else if (z.tasteZiel !== undefined) {
+        var dT = z.tasteZiel - z.x, sT = 300 * dt;
+        if (Math.abs(dT) <= sT) { z.x = z.tasteZiel; z.tasteZiel = undefined; } else { z.x += Math.sign(dT) * sT; }
+      } else if (z.auto) {
+        var d = z.auto.nach - z.x, s = z.auto.tempo * dt;
+        if (Math.abs(d) <= s) { z.x = z.auto.nach; z.auto = null; } else { z.x += Math.sign(d) * s; }
+      }
+      var roh = (z.x - letzteX) / dt;
+      letzteX = z.x;
+      z.vf += (roh - z.vf) * (1 - Math.exp(-dt / 0.03));
+      if (Math.abs(z.vf) < 1) { z.vf = 0; }
+      z.u = spannung(z.x - CX, z.vf, z.n, z.b, z.pol);
+      if (Math.abs(z.u) > Math.abs(z.spitze)) { z.spitze = z.u; }
+      var sZiel = Math.sign(z.u) * Math.min(1, Math.sqrt(Math.abs(z.u) / 300));
+      z.s += (sZiel - z.s) * (1 - Math.exp(-dt / 0.09));
+      if (Math.abs(z.s) < 0.003) { z.s = 0; }
+      var aenderung = feldSteigung(z.x - CX) * z.vf;
+      magnetSetzen();
+      elektronenSetzen();
+      anzeigen(aenderung);
+      verlaufSetzen(dt);
+      spuren(dt, aenderung);
+    }
+    requestAnimationFrame(bild);
+  }
+
+  spuleZeichnen();
+  magnetZeichnen();
+  requestAnimationFrame(bild);
+
+  // ------------------------------------------------ Reiter
+  var reiter = ['labor', 'heft', 'check'];
+  function zeige(id) {
+    reiter.forEach(function (r) {
+      el(r).hidden = r !== id;
+      el('tab-' + r).setAttribute('aria-selected', String(r === id));
+    });
+    window.scrollTo(0, 0);
+  }
+  reiter.forEach(function (r) { el('tab-' + r).addEventListener('click', function () { zeige(r); }); });
+
+  // ------------------------------------------------ Hefteintrag: Tippen statt Ziehen
+  var luecken = Array.prototype.slice.call(document.querySelectorAll('.luecke'));
+  var sel = null, aktiv = null;
+  function bankFuer(l) { return l.closest('.aufgabe').querySelector('.bank'); }
+  function ergebnis(t) { el('ergebnis').textContent = t; }
+  function freigeben(l) {
+    if (l._chip) { l._chip.classList.remove('used'); l._chip = null; }
+    l.textContent = ''; l.classList.remove('ok', 'bad');
+  }
+  function speichern() {
+    try { localStorage.setItem('induktion-heft', JSON.stringify(luecken.map(function (l) { return l.textContent; }))); } catch (e) { /* ohne Speicher weiter */ }
+  }
+  function fuellen(l, chip) {
+    freigeben(l);
+    chip.classList.add('used'); chip.classList.remove('sel');
+    l._chip = chip; l.textContent = chip.textContent;
+    sel = null;
+    if (aktiv) { aktiv.classList.remove('aktiv'); aktiv = null; }
+    ergebnis('');
+    speichern();
+  }
+  document.querySelectorAll('.wort').forEach(function (c) {
+    c.addEventListener('click', function () {
+      if (aktiv) { if (bankFuer(aktiv) === c.parentNode) { fuellen(aktiv, c); } return; }
+      if (sel) { sel.classList.remove('sel'); }
+      sel = sel === c ? null : c;
+      if (sel) { sel.classList.add('sel'); }
+    });
+  });
+  luecken.forEach(function (l) {
+    l.addEventListener('click', function () {
+      if (sel && bankFuer(l) === sel.parentNode) { fuellen(l, sel); return; }
+      if (l.textContent) { freigeben(l); ergebnis(''); speichern(); return; }
+      if (aktiv) { aktiv.classList.remove('aktiv'); }
+      aktiv = aktiv === l ? null : l;
+      if (aktiv) { aktiv.classList.add('aktiv'); }
+    });
+  });
+  el('pruefen').addEventListener('click', function () {
+    var richtig = 0, leer = 0;
+    luecken.forEach(function (l) {
+      l.classList.remove('ok', 'bad');
+      if (!l.textContent) { leer++; return; }
+      if (l.textContent.toLowerCase() === l.getAttribute('data-ans').toLowerCase()) { l.classList.add('ok'); richtig++; } else { l.classList.add('bad'); }
+    });
+    ergebnis(richtig + ' von ' + luecken.length + ' richtig' + (leer ? ', ' + leer + ' noch leer' : ''));
+  });
+  el('leeren').addEventListener('click', function () {
+    luecken.forEach(freigeben);
+    if (sel) { sel.classList.remove('sel'); sel = null; }
+    if (aktiv) { aktiv.classList.remove('aktiv'); aktiv = null; }
+    ergebnis(''); speichern();
+  });
+  el('pdf').addEventListener('click', function () { window.print(); });
+  try {
+    var gespeichert = JSON.parse(localStorage.getItem('induktion-heft') || 'null');
+    if (Array.isArray(gespeichert) && !document.body.classList.contains('sol')) {
+      luecken.forEach(function (l, i) {
+        if (!gespeichert[i]) { return; }
+        var chip = Array.prototype.filter.call(bankFuer(l).querySelectorAll('.wort:not(.used)'), function (c) { return c.textContent === gespeichert[i]; })[0];
+        if (chip) { fuellen(l, chip); }
+      });
+    }
+  } catch (e) { /* ohne Speicher weiter */ }
+
+  // ------------------------------------------------ Mini-Check
+  var FRAGEN = [
+    ['Einen stärkeren Magneten nehmen', true, 'Ein stärkerer Magnet ändert das Feld in der Spule mehr.'],
+    ['Den Magneten schneller bewegen', true, 'Das Feld ändert sich dann in kürzerer Zeit.'],
+    ['Eine Spule mit mehr Windungen nehmen', true, 'In jeder Windung wird Spannung erzeugt, das addiert sich.'],
+    ['Dickere Kabel zum Messgerät nehmen', false, 'Die Kabel leiten nur weiter. Am Magnetfeld in der Spule ändern sie nichts.'],
+    ['Den Magneten länger still in der Spule liegen lassen', false, 'Ohne Bewegung ändert sich das Feld nicht. Die Spannung bleibt 0.']
+  ];
+  var antworten = {};
+  function checkBauen() {
+    antworten = {};
+    el('checkErgebnis').textContent = '';
+    el('fragen').innerHTML = FRAGEN.map(function (f, i) {
+      return '<div class="frage" id="f' + i + '"><div>' + f[0] + '<small hidden></small></div><div class="wahl">' +
+        '<button class="opt" data-f="' + i + '" data-a="1">höhere Spannung</button><button class="opt" data-f="' + i + '" data-a="0">bringt nichts</button></div></div>';
+    }).join('');
+  }
+  el('fragen').addEventListener('click', function (e) {
+    var b = e.target.closest('button[data-f]');
+    if (!b) { return; }
+    var i = Number(b.getAttribute('data-f')), wahl = b.getAttribute('data-a') === '1', f = FRAGEN[i], box = el('f' + i);
+    antworten[i] = wahl === f[1];
+    box.classList.toggle('ok', antworten[i]);
+    box.classList.toggle('bad', !antworten[i]);
+    box.querySelectorAll('button').forEach(function (o) { o.setAttribute('aria-pressed', String(o === b)); });
+    var hinweis = box.querySelector('small');
+    hinweis.hidden = false;
+    hinweis.textContent = (antworten[i] ? 'Richtig. ' : 'Noch nicht. ') + f[2];
+    var n = Object.keys(antworten).length;
+    if (n === FRAGEN.length) {
+      var r = Object.keys(antworten).filter(function (k) { return antworten[k]; }).length;
+      el('checkErgebnis').textContent = r + ' von ' + FRAGEN.length + ' richtig.';
+    }
+  });
+  el('checkNeu').addEventListener('click', checkBauen);
+  checkBauen();
+})();
+</script>
+</body>
+</html>
